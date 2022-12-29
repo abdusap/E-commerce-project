@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OTP</title>
+   
+    <link rel="stylesheet" href="/public/user/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="/Public/admin/css/adminLoginStyle.css">
+</head>
+<body>
+
+        <div class="container">
+            <div class="signin-content">
+                <div class="signin-image">
+                    <figure><img src="/Public/user/images/otp.jpg" alt="sign up image"></figure>
+                </div>
+
+                <div class="signin-form">
+                    <h2 class="form-title">OTP</h2>
+                    <p style="color: red;"><%=locals.wrong%></p>
+                    <form action="/otpVerification" method="POST" class="register-form" id="login-form">
+                        <p class="text-danger"><%=locals.errorMessage%></p>
+                        <div class="form-group">
+                            <label for="your_name"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="text" name="otp" id="your_name" placeholder="Enter OTP"/>
+                        </div>
+                        
+                        <div class="form-group form-button">
+                            <input type="submit" name="signin" id="signin" class="form-submit" value="Submit"/>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>

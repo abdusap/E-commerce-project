@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="/Public/admin/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">TechKart-Admin</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+                    aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                        class="fas fa-search"></i></button> -->
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">Settings</a></li>
+                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+
+                        <a class="nav-link" href="/admin/home">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+
+                        <a class="nav-link" href="/admin/user">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Users
+                        </a>
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Product
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/admin/product">Product Management</a>
+                                <a class="nav-link" href="/admin/category">Category Management</a>
+                            </nav>
+                        </div>
+
+
+                        <!-- <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Coupens
+                        </a> -->
+                    </div>
+                </div>
+
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Product Manage</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">Here is the list of products and you can add or edit the products.</li>
+                    </ol>
+
+
+
+                    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Add Products.
+  </button>
+
+
+
+<!-- Modal -->
+<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Add Products</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/admin/addproduct" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                  
+                  <label for="exampleFormControlInput1">Name</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
+                  
+               
+                  <div class="form-group col-md-4">
+                    <label for="inputState">Category</label>
+                    <select id="inputState" class="form-control" name="category">
+                    <option selected>Choose...</option>
+                    <% categories.forEach((data)=>{ %>
+                    <option><%=data.name%></option>
+                    <%})%>
+                    </select>
+                   
+                  </div>
+                  <!-- <label for="exampleFormControlInput1">Category</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Category" name="category">  -->
+                  <label for="exampleFormControlInput1">Brand</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Brand" name="brand">
+                  <label for="exampleFormControlInput1">Description</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Description" name="description">
+                  <label for="exampleFormControlInput1">RAM</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="RAM" name="ram">
+                  <label for="exampleFormControlInput1">Stock</label>
+                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Stock" name="stock">
+                  <label for="exampleFormControlInput1">Price</label>
+                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Price" name="price">
+                  <label for="exampleFormControlFile1">Upload photos </label>
+                  <input type="file" class="form-control-file" id="image" name="image">
+                </div>
+              
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+             
+  
+  <div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        User DataTable  
+    </div>
+    <div class="card-body">
+        <% if(products!=null) { %>
+        <table id="datatablesSimple">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>stock</th>
+                    <th>status</th>
+                    <th>Action</th>
+                   
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>stock</th>
+                    <th>status</th>
+                    <th>Action</th>
+                    
+                </tr>
+            </tfoot>
+            <tbody>
+                <% products.forEach((data)=>{ %>
+              <tr>
+                
+                <td><img src="/Public/admin/product/<%=data.image%>" style="width:50px;height:50px;"></td>
+                <td><%=data.name%></td>
+                <td>
+                    <%=data.catData[0].name %>
+                   
+                </td>
+                <td><%=data.brand%></td>
+                <td><%=data.stock%></td>
+                <td>
+                    <%if(data.status==true){%> 
+                        <p class="text-success">Active</p>
+                        <%} else {%>
+                            <p class="text-danger">Blocked</p>
+                            <%}%>
+
+                </td>
+                
+                <td>
+                    <%if(data.status==true){%> 
+                      <a href="/admin/product-block?id=<%=data._id%>" onclick="return confirm('Are you sure, change access to <%=data.name%>')"><button type="button" class="btn btn-danger" style="width:100px;">Block</button></a>
+                        <%} else {%>
+                           <a href="/admin/product-block?id=<%=data._id%>" onclick="return confirm('Are you sure, change access to <%=data.name%>')"><button type="button" class="btn btn-success" style="width:100px;">Unblock</button></a> 
+                            <%}%>
+                            <a href="/admin/product/edit?id=<%=data._id%>" onclick="return confirm('Are you sure to edit <%=data.name%>')"><button type="button" class="btn btn-outline-primary">Edit</button></a> 
+                            <a href="/admin/product-delete?id=<%=data._id%>" onclick="return confirm('Are you sure to delete <%=data.name%>')"><button type="button" class="btn btn-outline-danger">Delete</button></a> 
+                          
+                </td>
+              </tr>
+              <%})%>
+            </tbody>
+        </table>
+        <%}%>
+    </div>
+</div>
+                  
+
+
+
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">TechKart &copy;  Website 2022</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Public/admin/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="/Public/admin/assets/demo/chart-area-demo.js"></script>
+    <script src="/Public/admin/assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="/Public/admin/js/datatables-simple-demo.js"></script>
+</body>
+
+</html>

@@ -1,15 +1,15 @@
 const express= require('express')
 const app=express()
-// const session = require('express-session')
+const session = require('express-session')
 const path=require('path')
+const fileupload=require('express-fileupload')
 const userRoute=require('./Routes/userRoute')
 const adminRoute=require('./Routes/adminRoute')
 // const config=require('./Config/config')
 
 // Database section
 require('./Model/databaseConnection')
-// require('./Model/userModel')
-// require('./Model/adminModel')
+
 
 //For not storing Cache
 app.use((req, res, next) => {
@@ -17,14 +17,14 @@ app.use((req, res, next) => {
     next();
   });
 
+// Session
+app.use(session({
+  secret: 'Tech-Kart-ecommerce-site',
+  name: 'TechKart-Session',
+  resave: false,
+  saveUninitialized: true
+}))
 
-// Creating a session
-// app.use(session({
-//     resave: true,
-//     saveUninitialized: true,
-//     secret: config.sessionSecret,
-    
-// }))
 
 
 // for parsing the url to json,string or array format
@@ -42,11 +42,15 @@ app.set('view engine', 'ejs')
 
 // for adding external files to view engine
 app.use(express.static(staticPath))
-
-//routing
-
-app.use(userRoute)
-app.use(adminRoute)
+app.use("/Public", express.static(path.join(__dirname, "Public")));
 
 
-app.listen(port,()=>console.log(`Server is running at  http://localhost:${port}/login`))
+// routing
+// app.use('/',userRoute)
+
+app.use('/',userRoute)
+
+app.use('/admin',adminRoute)
+
+
+app.listen(port,()=>console.log(`Server is running at  http://localhost:${port}`))

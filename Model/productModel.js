@@ -24,9 +24,11 @@ const productSchema=new mongoose.Schema({
     price:{
         type:Number
     },
-    image:{
-        type:String
-    },
+    image:[
+        {
+            filename : String  
+        }
+    ],
     status:{
         type:Boolean,
         default:true

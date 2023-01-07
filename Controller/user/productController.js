@@ -1,29 +1,39 @@
 const category = require("../../Model/categoryModel");
 const product = require("../../Model/productModel");
+const customer = require("../../Model/customerModel");
+
 const mongoose = require("mongoose");
 
-let productPage = async (req, res) => {
+const productPage = async (req, res) => {
     try{
-    let brands = await product.distinct("brand");
-    let categories = await category.find({ status: true });
-    let productList = await product.find();
-    res.render("../views/user/product.ejs", { productList, brands, categories });
+      const user=await customer.findOne({_id: req.session.user})
+      const brands = await product.distinct("brand");
+      const categories = await category.find({ status: true });
+    if(req.query.catId && req.query.brand){
+      const productList = await product.find({category : req.query.catId , brand : req.query.brand , status : true});
+      res.render("../views/user/product.ejs", { productList, brands, categories ,user});
+    }else{
+      const productList = await product.find( {category : req.query.catId , status : true});
+    res.render("../views/user/product.ejs", { productList, brands, categories ,user});
+    }
     }catch(error){
         console.log(error);
     }
   };
 
-  let productDetails = async (req, res) => {
+  const productDetails = async (req, res) => {
     try{
-    let productData = await product.findById(
+      const user=await customer.findOne({_id: req.session.user})
+      const productData = await product.findById(
       new mongoose.Types.ObjectId(req.query.id)
     );
-    let brands = await product.distinct("brand");
-    let categories = await category.find({ status: true });
+    const brands = await product.distinct("brand");
+    const categories = await category.find({ status: true });
     res.render("../views/user/productDetails.ejs", {
       brands,
       categories,
       productData,
+      user
     });
 }catch(error){
     console.log(error);

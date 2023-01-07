@@ -31,13 +31,13 @@ router.get('/category-delete',adminSession.isLogin,categoryController.categoryDe
 
 router.get('/product',adminSession.isLogin,productController.productManage)
 
-router.post('/addproduct',adminSession.isLogin,upload.single('image'),productController.addProduct)
+router.post('/addproduct',adminSession.isLogin,upload.array('image',12),productController.addProduct)
 
 router.get('/product/edit',adminSession.isLogin,productController.productEdit)
 
 router.get('/product-block',adminSession.isLogin,productController.productBlock)
 
-router.post('/edit',adminSession.isLogin,upload.single('image'),productController.postProductEdit)
+router.post('/edit',adminSession.isLogin,upload.array('image'),productController.postProductEdit)
 
 router.get('/product-delete',adminSession.isLogin,productController.productDelete)
 

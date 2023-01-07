@@ -35,7 +35,7 @@ const productManage = async (req, res) => {
         ram: req.body.ram,
         stock: req.body.stock,
         price: req.body.price,
-        image: req.file.filename,
+        image: req.files,
       });
       newProduct.save();
       res.redirect("/admin/product");
@@ -113,6 +113,7 @@ const productManage = async (req, res) => {
         } else {
           let data = await category.findOne({ name: req.body.category });
           let productName = req.body.name.toUpperCase();
+          console.log(req.file.filename);
           await product.findByIdAndUpdate(
             { _id: productID },
             {
@@ -124,9 +125,9 @@ const productManage = async (req, res) => {
                 ram: req.body.ram,
                 stock: req.body.stock,
                 price: req.body.price,
-                image: req.file.filename,
+                image: req.files,
               },
-            }
+            },
           );
           res.redirect("/admin/product");
         }
@@ -156,4 +157,5 @@ const productManage = async (req, res) => {
     productDelete,
     postProductEdit,
   };
+  
   

@@ -31,9 +31,6 @@ const adminVerification = async (req, res) => {
   // Admin page
 const home = (req, res) => {
     try {
-      console.log(req.session.admin);
-      req.session.admin=false
-      console.log(req.session)
       res.render("../views/admin/home.ejs");
     } catch (error) {
       console.log(error);

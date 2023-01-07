@@ -2,7 +2,7 @@
   
 
         <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        	<div class="page-header text-center" style="background-image: url('/Public/user/images/page-header-bg.jpg')">
         		<div class="container">
         			<h1 class="page-title">Products<span>Shop</span></h1>
         		</div><!-- End .container -->
@@ -101,17 +101,20 @@
                                             <figure class="product-media">
                                                 <!-- <span class="product-label label-new">New</span> -->
                                                 <a href="/product-details?id=<%=data._id%>">
-                                                    <img src="/Public/admin/product/<%=data.image%>" alt="Product image" class="product-image">
+                                                    <img src="/Public/admin/product/<%=data.image[0].filename%>" alt="Product image" class="product-image">
                                                 </a>
 
                                                 <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                                    <!-- <a href="#" onclick="addToWishlist('<%=data._id%>')" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
+													<button onclick="addToWishlist('<%=data._id%>')" style="border: none;" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></button>
+
                                                     <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
                                                     <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
                                                 </div><!-- End .product-action-vertical -->
 
                                                 <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                    <!-- <a href="#" class="btn-product btn-cart" onclick="addToCart('<%=data._id%>')"><span>add to cart</span></a> -->
+													<button class="btn-product btn-cart" style="border: none;" onclick="add_to_cart('<%=data._id%>')"> <span>add to cart</span></button>
                                                 </div><!-- End .product-action -->
                                             </figure><!-- End .product-media -->
 
@@ -187,5 +190,5 @@
                 </div><!-- End .container -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
-
+		<script src="/Public/user/js/script.js"></script>
         <%-include('../partials/user-footer.ejs') %>

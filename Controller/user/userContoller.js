@@ -4,6 +4,7 @@ const customer = require("../../Model/customerModel");
 const category = require("../../Model/categoryModel");
 const product = require("../../Model/productModel");
 const cart = require("../../Model/cartModal");
+const orders = require("../../Model/orderModel");
 const mongoose = require("mongoose");
 const { findOne } = require("../../Model/customerModel");
 
@@ -311,6 +312,73 @@ let id
 }
 }
 
+const orderPage=async (req,res)=>{
+  try{
+    const brands = await product.distinct("brand");
+    const categories = await category.find({ status: true });
+    const user=await customer.findOne({_id: req.session.user})
+  const order=await orders.find({userId:req.session.user})
+  // console.log(order);
+   res.render('../views/user/orderPage.ejs',{order,brands,categories,user})
+  }catch(error){
+    console.log(error);
+  }
+}
+
+const viewOrderDetails=async (req,res)=>{
+  try{
+    let id=req.query.id
+    id=mongoose.Types.ObjectId(id)
+    const brands = await product.distinct("brand");
+    const categories = await category.find({ status: true });
+    const user =await customer.findOne({_id: req.session.user})
+  const productData =await orders.aggregate([
+    {$match:{ _id:id }},
+    {$unwind:"$orderItems"},
+    {$project:{
+      address:"$address",
+      totalAmount:"$totalAmount",
+      productId:"$orderItems.productId",
+      productQty:"$orderItems.quantity",
+    }},
+    {$lookup:{
+      from:"products",
+      localField:"productId",
+      foreignField:"_id",
+      as:"data"
+    }},
+    {$unwind:"$data"},
+    {$project:{
+      address:"$address",
+      totalAmount:"$totalAmount",
+      productQty:"$productQty",
+      image:"$data.image",
+      name:"$data.name",
+      brand:"$data.brand",
+      price:"$data.price"
+
+    }},
+    {$addFields:{
+      total:{$multiply:["$productQty","$price"]}
+    }}
+
+  ])
+   res.render('../views/user/orderHistory.ejs',{productData,brands,categories,user})
+  }catch(error){
+    console.log(error);
+  }
+}
+
+const cancelOrder=async (req,res)=>{
+  try{
+     const id=req.query.id
+     await orders.updateOne({ _id : id },{ $set: { orderStatus: "cancelled" }})
+     res.redirect('/order')
+  }catch(error){
+    console.log(error);
+  }
+}
+
 
   module.exports = {
     login,
@@ -326,5 +394,8 @@ let id
     addressDelete,
     addressAdd,
     addressDefualt,
-    profileEdit
+    profileEdit,
+    orderPage,
+    viewOrderDetails,
+    cancelOrder
   }

@@ -4,6 +4,8 @@ const adminController=require('../Controller/admin/adminController')
 const categoryController=require('../Controller/admin/categoryController')
 const customerController=require('../Controller/admin/customerController')
 const productController=require('../Controller/admin/productController')
+const couponController=require('../Controller/admin/couponController')
+const orderController=require('../Controller/admin/orderController')
 const adminSession=require('../Middleware/adminSession')
 const upload = require('../Middleware/uploadFile')
 
@@ -41,6 +43,14 @@ router.post('/edit',adminSession.isLogin,upload.array('image'),productController
 
 router.get('/product-delete',adminSession.isLogin,productController.productDelete)
 
+router.get('/coupon',adminSession.isLogin,couponController.couponManage)
 
+router.post('/coupon',adminSession.isLogin,couponController.addCoupon)
+
+router.get('/coupon-block',adminSession.isLogin,couponController.block)
+
+router.get('/order',adminSession.isLogin,orderController.orderManage)
+
+router.post('/order',adminSession.isLogin,orderController.orderUpdate)
 
 module.exports=router

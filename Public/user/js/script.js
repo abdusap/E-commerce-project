@@ -64,8 +64,7 @@ function add_to_cart(proId){
                        
                       });
                     
-                    }
-          
+                    }        
         }
     })
 }
@@ -243,3 +242,83 @@ function setaddress(id){
 // $('select').on('change', function() {
 //     alert( this.value );
 //   });
+
+// function couponCheck(){
+    // document.getElementById('coupon_button').addEventListener('click', function() {
+        // var inputValue = document.getElementById('couponCode').value;
+        // console.log(inputValue);
+    //   });
+    // $.ajax({
+    //     url:'/coupon_check',
+    //     method:'patch',
+    //     data : {
+    //         couponCode : $("#couponCode").val(),
+            // value: inputValue
+//         },
+//     })
+// }
+
+// $("#coupon_button").click(function() {
+//     // get the value of the input field
+//     var inputValue = $("#couponCode").val();
+
+//     // create an AJAX request
+//     $.ajax({
+//       type: "post",
+//       url: "/coupon_check",
+//       data: { input: inputValue },
+//       success: function(response) {
+//         // update the page with the response
+//         // $("#response").html(response);
+//       }
+//     });
+//   });
+
+  $("#coupon_button").click(function(event) {
+    // prevent the form from being submitted
+    event.preventDefault();
+  
+    // get the value of the input field
+    var inputValue = $("#couponCode").val();
+  
+    // create an AJAX request
+    $.ajax({
+      type: "post",
+      url: "/coupon_check",
+      data: { input: inputValue,total:$('#total').html() },
+      success: function(response) {
+        if(response.couponApplied){
+        $('#message').html('Coupon Applied').css('color', 'green');
+        let discount=response.couponApplied.discount
+        let code=response.couponApplied.code
+        let couponId=response.couponApplied._id
+        let total=$('#total').html()
+        let subtotal=$('#subtotal').html()
+        discount=parseInt(discount)
+        total=parseInt(total)
+        let discountedPrice=(discount*total)/100
+        total=total-discountedPrice
+        $('#total').html(total)
+        $('#coupon_code').html(code)
+        $('#couponId').val(couponId)
+        $('#total_amount').val(total)
+        }
+        if(response.notExist){
+            $('#message').html('Coupon Not Found!!').css('color', 'red');
+            }
+        if(response.expired){
+           $('#message').html('Coupon Expired!!').css('color', 'red');  
+            }
+        if(response.userUsed){
+            $('#message').html('Coupon Already Used!!').css('color', 'red');  
+        }
+        if(response.minAmount){
+            let minAmount=response.minAmount
+            $('#message').html('Minimum '+minAmount+' required!!').css('color', 'red');  
+        }
+        // update the page with the response
+        // $("#response").html(response);
+      }
+    });
+  });
+  

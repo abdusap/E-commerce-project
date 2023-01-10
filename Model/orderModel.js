@@ -20,16 +20,23 @@ const orderSchema=mongoose.Schema({
     },
     orderItems: [
         {
-            productId:String,
+            productId:mongoose.Types.ObjectId,
             quantity:Number
         }
     ],
+    couponUsed:{
+        type:mongoose.Types.ObjectId,
+        default:null
+    },
+    subTotal:{
+        type:Number
+    },
     totalAmount:{
         type: Number
     },
     orderStatus:{
         type: String,
-        default: "pending"
+        default: "processing"
     },
     paymentMethod:{
         type: String
@@ -43,7 +50,8 @@ const orderSchema=mongoose.Schema({
         default:Date.now()
     },
     deliveryDate: {
-        type: String
+        type: String,
+        default:new Date(Date.now() + 5*24*60*60*1000).toISOString().slice(0,10)
     },
     
 })

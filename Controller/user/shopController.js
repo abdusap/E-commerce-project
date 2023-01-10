@@ -2,6 +2,7 @@ const customer = require("../../Model/customerModel");
 const category = require("../../Model/categoryModel");
 const product = require("../../Model/productModel");
 const cart = require("../../Model/cartModal");
+const coupon=require("../../Model/couponModel")
 const mongoose = require("mongoose");
 const order = require("../../Model/orderModel");
 const wishlist = require("../../Model/wishlistModel");
@@ -151,7 +152,7 @@ const add_to_cart=async (req,res)=>{
           await addCart.save()
           const cartData =await cart.findOne({userId:id})
                const count=cartData.cartItem.length
-               console.log(count);  
+              //  console.log(count);  
           res.json({success:true,count})
       }
       }else{
@@ -222,10 +223,10 @@ const productQtySub = async (req, res) => {
   }
 };
 
-let subtotal;
+
 const checkOut = async (req, res) => {
   try {
-    subtotal = req.query.subtotal;
+  //  let subtotal = req.query.subtotal;
     let cartItems = await cart.aggregate([
       { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
       { $unwind: "$cartItem" },
@@ -259,6 +260,10 @@ const checkOut = async (req, res) => {
         },
       },
     ]);
+    const subtotal = cartItems.reduce( (acc, curr)=> {
+      acc = acc + curr.total;
+      return acc;
+    }, 0);
     const user = await customer.findOne({ _id: req.session.user });
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
@@ -294,8 +299,8 @@ const checkOut = async (req, res) => {
 
 const postCheckOut = async (req, res) => {
   try {
-    if (req.body.address == "") {
-      console.log("hau");
+    // if (req.body.address == "") {
+      // console.log("hau");
       if (req.body.payment_mode == "COD") {
         const productData = await cart.aggregate([
           { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
@@ -308,6 +313,67 @@ const postCheckOut = async (req, res) => {
             },
           },
         ]);
+        let cartItems = await cart.aggregate([
+          { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
+          { $unwind: "$cartItem" },
+          {
+            $project: {
+              productId: "$cartItem.productId",
+              qty: "$cartItem.qty",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "productId",
+              foreignField: "_id",
+              as: "productDetails",
+            },
+          },
+          { $unwind: "$productDetails" },
+          {
+            $project: {
+              price: "$productDetails.price",
+              qty: "$qty",
+              id: "$productDetails._id",
+              userId: "$userId",
+            },
+          },
+          {
+            $addFields: {
+              total: { $multiply: ["$price", "$qty"] },
+            },
+          },
+        ]);
+        const subtotal = cartItems.reduce( (acc, curr)=> {
+          acc = acc + curr.total;
+          return acc;
+        }, 0);
+        // console.log(req.body);
+        // console.log(subtotal)
+        if (req.body.couponid === ''){
+        const orderDetails = new order({
+          userId: req.session.user,
+          name: req.body.name,
+          number: req.body.mobile,
+          address: {
+            addressline1: req.body.addressline1,
+            addressline2: req.body.addressline2,
+            district: req.body.district,
+            state: req.body.state,
+            country: req.body.country,
+            pin: req.body.pin,
+          },        
+          orderItems: productData,
+          subTotal: subtotal,
+          totalAmount: subtotal,
+          paymentMethod: "COD",
+        });
+        // console.log(orderDetails);
+        await orderDetails.save();
+        res.redirect('/')
+      }else{
+        await coupon.updateOne({_id:req.body.couponid}, { $push: { users: { userId:req.session.user} } })
         const orderDetails = new order({
           userId: req.session.user,
           name: req.body.name,
@@ -321,68 +387,72 @@ const postCheckOut = async (req, res) => {
             pin: req.body.pin,
           },
           orderItems: productData,
-          totalAmount: subtotal,
+          couponUsed:req.body.couponid,
+          subTotal: subtotal,
+          totalAmount: req.body.total,
           paymentMethod: "COD",
         });
+        // console.log(orderDetails);
         await orderDetails.save();
         res.redirect('/')
+      }
       }
       if (req.body.payment_mode == "pay") {
         console.log("null pay");
       }
-    } else {
-      if (req.body.payment_mode == "COD") {
-        const productData = await cart.aggregate([
-          { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
-          { $unwind: "$cartItem" },
-          {
-            $project: {
-              _id: 0,
-              productId: "$cartItem.productId",
-              quantity: "$cartItem.qty",
-            },
-          },
-        ]);
-        const address = await customer.aggregate([
-          { $match: { _id: mongoose.Types.ObjectId(req.session.user) } },
-          { $unwind: "$address" },
-          {
-            $project: {
-              name: "$address.name",
-              addressline1: "$address.addressline1",
-              addressline2: "$address.addressline2",
-              district: "$address.distict",
-              state: "$address.state",
-              country: "$address.country",
-              pin: "$address.pin",
-              mobile: "$address.mobile",
-              id: "$address._id",
-            },
-          },
-          { $match: { id: mongoose.Types.ObjectId(req.body.address) } },
-        ]);
-        const orderDetails = new order({
-          userId: req.session.user,
-          name: address[0].name,
-          number: address[0].mobile,
-          address: {
-            addressline1: address[0].addressline1,
-            addressline2: address[0].addressline2,
-            district: address[0].district,
-            state: address[0].state,
-            country: address[0].country,
-            pin: address[0].pin,
-          },
-          orderItems: productData,
-          totalAmount: subtotal,
-          paymentMethod: "COD",
-        });
-        await orderDetails.save();
-        res.redirect('/')
-      } else {
-        console.log("choose address online payment");
-      }
-    }
+    // } else {
+    //   if (req.body.payment_mode == "COD") {
+    //     const productData = await cart.aggregate([
+    //       { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
+    //       { $unwind: "$cartItem" },
+    //       {
+    //         $project: {
+    //           _id: 0,
+    //           productId: "$cartItem.productId",
+    //           quantity: "$cartItem.qty",
+    //         },
+    //       },
+    //     ]);
+    //     const address = await customer.aggregate([
+    //       { $match: { _id: mongoose.Types.ObjectId(req.session.user) } },
+    //       { $unwind: "$address" },
+    //       {
+    //         $project: {
+    //           name: "$address.name",
+    //           addressline1: "$address.addressline1",
+    //           addressline2: "$address.addressline2",
+    //           district: "$address.distict",
+    //           state: "$address.state",
+    //           country: "$address.country",
+    //           pin: "$address.pin",
+    //           mobile: "$address.mobile",
+    //           id: "$address._id",
+    //         },
+    //       },
+    //       { $match: { id: mongoose.Types.ObjectId(req.body.address) } },
+    //     ]);
+    //     const orderDetails = new order({
+    //       userId: req.session.user,
+    //       name: address[0].name,
+    //       number: address[0].mobile,
+    //       address: {
+    //         addressline1: address[0].addressline1,
+    //         addressline2: address[0].addressline2,
+    //         district: address[0].district,
+    //         state: address[0].state,
+    //         country: address[0].country,
+    //         pin: address[0].pin,
+    //       },
+    //       orderItems: productData,
+    //       totalAmount: subtotal,
+    //       paymentMethod: "COD",
+    //     });
+    //     await orderDetails.save();
+    //     res.redirect('/')
+    //   } else {
+    //     console.log("choose address online payment");
+    //   }
+    // }
   } catch (error) {
     console.log(error);
   }
@@ -477,7 +547,7 @@ const addWishlist = async(req,res)=>{
           await addWish.save()
           const wishlistData =await wishlist.findOne({userId:Id})
                const count=wishlistData.wishList.length
-               console.log(count);  
+              //  console.log(count);  
           res.json({success:true,count})
 
 
@@ -520,6 +590,54 @@ const setAddressCheckout=async (req,res)=>{
   }
 }
 
+const couponCheck=async (req,res)=>{
+  try{
+    // console.log('dp');
+    // console.log(req.body.input);
+    const code=req.body.input
+    let total=req.body.total
+    total=parseInt(total)
+     coupon.findOne({code:code}).then((couponExist)=>{
+      if(couponExist){
+        let currentDate = new Date();
+        if (currentDate >= couponExist.startingDate && currentDate <= couponExist.expiryDate) {
+          let id=req.session.user
+          id = mongoose.Types.ObjectId(req.session.user)
+          // const userExist = couponExist.users.findIndex((couponExist) => couponExist.users == id);
+          coupon.findOne({code:code},{users:{$elemMatch:{userId: id}}}).then((exist)=>{
+            // console.log(exist);
+            if(exist.users.length===0){
+              if(total>=couponExist.minAmount){
+                res.json({couponApplied:couponExist})
+              }else{
+                let minAmount=couponExist.minAmount
+                res.json({minAmount})
+              }
+              
+            }else{
+              // console.log('illa');
+              // user ind
+              res.json({userUsed:true})
+            }
+          })
+          // console.log(userExist);
+          // the coupon is valid
+        } else {
+          res.json({expired:true})
+          
+        }
+          // res.json({exist:'hai'})
+      }else{
+           res.json({notExist:true})
+      }
+    //  console.log(couponExist);
+    })
+    // console.log(req.body.data.couponCheck)
+  }catch(error){
+    console.log(error);
+  }
+}
+
 module.exports = {
   userCart,
   // addToCart,
@@ -531,5 +649,6 @@ module.exports = {
   postCheckOut,
   viewWishlist,
   addWishlist,
-  setAddressCheckout
+  setAddressCheckout,
+  couponCheck
 };

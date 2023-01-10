@@ -38,7 +38,7 @@ router.post('/profileedit',session.isLogin,user.profileEdit)
 
 router.get('/product',product.productPage)
 
-router.get('/product-details?',product.productDetails)
+router.get('/product-details',product.productDetails)
 
 router.get('/cart',session.isLogin,shop.userCart)
 
@@ -62,6 +62,15 @@ router.get('/wishlist',session.isLogin,shop.viewWishlist)
 router.post('/addtowishlist',session.isLogin,shop.addWishlist)
 
 router.post('/setaddress',session.isLogin,shop.setAddressCheckout)
+
+router.post('/coupon_check',session.isLogin,shop.couponCheck)
+
+router.get('/order',session.isLogin,user.orderPage)
+
+router.get('/order/view_orders',session.isLogin,user.viewOrderDetails)
+
+router.get('/order/cancel_orders',session.isLogin,user.cancelOrder)
+
 
 
 

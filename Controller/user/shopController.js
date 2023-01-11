@@ -6,6 +6,8 @@ const coupon=require("../../Model/couponModel")
 const mongoose = require("mongoose");
 const order = require("../../Model/orderModel");
 const wishlist = require("../../Model/wishlistModel");
+const instance=require("../../Middleware/razorpay")
+const crypto=require("crypto")
 
 const userCart = async (req, res) => {
   try {
@@ -398,7 +400,124 @@ const postCheckOut = async (req, res) => {
       }
       }
       if (req.body.payment_mode == "pay") {
-        console.log("null pay");
+        const productData = await cart.aggregate([
+          { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
+          { $unwind: "$cartItem" },
+          {
+            $project: {
+              _id: 0,
+              productId: "$cartItem.productId",
+              quantity: "$cartItem.qty",
+            },
+          },
+        ]);
+        let cartItems = await cart.aggregate([
+          { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
+          { $unwind: "$cartItem" },
+          {
+            $project: {
+              productId: "$cartItem.productId",
+              qty: "$cartItem.qty",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "productId",
+              foreignField: "_id",
+              as: "productDetails",
+            },
+          },
+          { $unwind: "$productDetails" },
+          {
+            $project: {
+              price: "$productDetails.price",
+              qty: "$qty",
+              id: "$productDetails._id",
+              userId: "$userId",
+            },
+          },
+          {
+            $addFields: {
+              total: { $multiply: ["$price", "$qty"] },
+            },
+          },
+        ]);
+        const subtotal = cartItems.reduce( (acc, curr)=> {
+          acc = acc + curr.total;
+          return acc;
+        }, 0);
+        // console.log(req.body);
+        // console.log(subtotal)
+        if (req.body.couponid === ''){
+        const orderDetails =({
+          userId: req.session.user,
+          name: req.body.name,
+          number: req.body.mobile,
+          address: {
+            addressline1: req.body.addressline1,
+            addressline2: req.body.addressline2,
+            district: req.body.district,
+            state: req.body.state,
+            country: req.body.country,
+            pin: req.body.pin,
+          },        
+          orderItems: productData,
+          subTotal: subtotal,
+          totalAmount: subtotal,
+          paymentMethod: "Online Payment",
+        });
+        var options = {
+          amount: subtotal*100,  // amount in the smallest currency unit
+          currency: "INR",
+          receipt: "order_rcptid_11"
+        };
+
+        instance.orders.create(options, function(err, order) {
+          if(err){
+          console.log(err);
+          console.log('online payment error');
+          }else{
+            // console.log(order);
+            res.json({order,orderDetails})
+          }
+        });
+      }else{
+        const orderDetails = new order({
+          userId: req.session.user,
+          name: req.body.name,
+          number: req.body.mobile,
+          address: {
+            addressline1: req.body.addressline1,
+            addressline2: req.body.addressline2,
+            district: req.body.district,
+            state: req.body.state,
+            country: req.body.country,
+            pin: req.body.pin,
+          },
+          orderItems: productData,
+          couponUsed:req.body.couponid,
+          subTotal: subtotal,
+          totalAmount: req.body.total,
+          paymentMethod: "Online Payment",
+        });   
+        var options = {
+          amount: req.body.total*100,  // amount in the smallest currency unit
+          currency: "INR",
+          receipt: "order_rcptid_11"
+        };
+
+        instance.orders.create(options, function(err, order) {
+          if(err){
+          console.log(err);
+          console.log('online payment error');
+          }else{
+            // console.log(order);
+            res.json({order,orderDetails})
+            console.log('online payment');
+          }
+        });
+      }
       }
     // } else {
     //   if (req.body.payment_mode == "COD") {
@@ -457,6 +576,37 @@ const postCheckOut = async (req, res) => {
     console.log(error);
   }
 };
+
+
+const verifyPayment= async (req, res) => {
+try{
+  const details = req.body;
+  let orderDetails=req.body.orderDetails
+  let hmac = crypto.createHmac("sha256", process.env.KEYSECRET);
+  hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
+  hmac = hmac.digest("hex");
+
+  if (hmac == details.payment.razorpay_signature) {
+    if ( 'couponUsed' in orderDetails){
+      await coupon.updateOne({_id:orderDetails.couponUsed}, { $push: { users: { userId:req.session.user} } })
+    orderDetails=new order(orderDetails)
+      await orderDetails.save()
+    res.json({success:true})
+    }else{
+      orderDetails=new order(orderDetails)
+      await orderDetails.save()
+      res.json({success:true})
+    }
+  } else {
+    console.log(err);
+    res.json({ status: false, err_message: "payment failed" });
+  }
+}catch(error){
+  console.log(error)
+}
+}
+
+
 
 const viewWishlist=async (req,res)=>{
   try{
@@ -638,6 +788,9 @@ const couponCheck=async (req,res)=>{
   }
 }
 
+
+
+
 module.exports = {
   userCart,
   // addToCart,
@@ -650,5 +803,6 @@ module.exports = {
   viewWishlist,
   addWishlist,
   setAddressCheckout,
-  couponCheck
+  couponCheck,
+  verifyPayment
 };

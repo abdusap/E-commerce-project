@@ -7,6 +7,7 @@ const cart = require("../../Model/cartModal");
 const orders = require("../../Model/orderModel");
 const mongoose = require("mongoose");
 const { findOne } = require("../../Model/customerModel");
+require('dotenv').config()
 
 // Login page
 const login = (req, res) => {
@@ -88,14 +89,14 @@ const userVerfication = async (req, res) => {
         const transporter = await nodemailer.createTransport({
           service: "gmail",
           auth: {
-            user: "saepabdu@gmail.com",
-            pass: "txmcwfwykcvpjxhu",
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD,
           },
         });
 
         //Mail options
         const mailOptions = await {
-          from: "saepabdu@gmail.com",
+          from: process.env.EMAIL,
           to: inputEmail ,
           subject: "OTP Verification",
           html: `<p>your OTP verification code is :${tempOTP}</p>`,

@@ -6,9 +6,10 @@ const fileupload=require('express-fileupload')
 const userRoute=require('./Routes/userRoute')
 const adminRoute=require('./Routes/adminRoute')
 // const config=require('./Config/config')
+require('dotenv').config()
 
 // Database section
-require('./Model/databaseConnection')
+require('./config/connection')
 
 
 //For not storing Cache
@@ -32,7 +33,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // port specified
-const port= process.env.PORT || 9000
+const port= process.env.PORT
 
 const staticPath=path.join(__dirname,'Public')
 

@@ -71,6 +71,8 @@ router.get('/order/view_orders',session.isLogin,user.viewOrderDetails)
 
 router.get('/order/cancel_orders',session.isLogin,user.cancelOrder)
 
+router.post('/verifyPayment',session.isLogin,shop.verifyPayment)
+
 
 
 

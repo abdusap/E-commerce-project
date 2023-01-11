@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 const order = require("../../Model/orderModel");
 const wishlist = require("../../Model/wishlistModel");
 const instance=require("../../Middleware/razorpay")
-const crypto=require("crypto")
+const crypto=require("crypto");
+const { productDetails } = require("./productController");
 
 const userCart = async (req, res) => {
   try {
@@ -64,52 +65,7 @@ const userCart = async (req, res) => {
   }
 };
 
-// let addToCart = async (req, res) => {
-//   try {
-//     const data = req.body;
-//     const id = data.Id;
-//     const exist1 = await cart.aggregate([
-//       {
-//         $match: {
-//           $and: [
-//             { userId: mongoose.Types.ObjectId(req.session.user) },
-//             {
-//               cartItem: {
-//                 $elemMatch: { productId: new mongoose.Types.ObjectId(id) },
-//               },
-//             },
-//           ],
-//         },
-//       },
-//     ]);
-//     if (exist1.length === 0) {
-//       await cart.updateOne(
-//         { userId: req.session.user },
-//         { $push: { cartItem: { productId: id } } },
-//         { upsert: true }
-//       );
-//       const cartCount = await cart.find({
-//         userId: mongoose.Types.ObjectId(req.session.user),
-//       });
-//       const count = cartCount[0].cartItem.length;
-//       res.json({ cout: count });
-//       // res.redirect("/cart");
-//     } else {
-//       await cart.updateOne(
-//         { userId: req.session.user, "cartItem.productId": id },
-//         { $inc: { "cartItem.$.qty": 1 } }
-//       );
-//       const cartCount = await cart.find({
-//         userId: mongoose.Types.ObjectId(req.session.user),
-//       });
-//       const count = cartCount[0].cartItem.length;
-//       res.json({ cout: count });
-      // res.redirect("/cart");
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+
 
 const add_to_cart=async (req,res)=>{
   try{
@@ -354,6 +310,7 @@ const postCheckOut = async (req, res) => {
         // console.log(req.body);
         // console.log(subtotal)
         if (req.body.couponid === ''){
+     
         const orderDetails = new order({
           userId: req.session.user,
           name: req.body.name,
@@ -373,9 +330,18 @@ const postCheckOut = async (req, res) => {
         });
         // console.log(orderDetails);
         await orderDetails.save();
-        res.redirect('/')
+        let productDetails=productData
+    //     console.log(productDetails);
+    // for(let i =0;i<productDetails.length;i++){
+    //     await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
+    // }
+  
+        res.json({codSuccess:true})
+        // location.href = "/payment_fail";
+        // res.redirect('/')
       }else{
         await coupon.updateOne({_id:req.body.couponid}, { $push: { users: { userId:req.session.user} } })
+
         const orderDetails = new order({
           userId: req.session.user,
           name: req.body.name,
@@ -396,7 +362,8 @@ const postCheckOut = async (req, res) => {
         });
         // console.log(orderDetails);
         await orderDetails.save();
-        res.redirect('/')
+        res.json({codSuccess:true})
+        // location.href = "/payment_fail";
       }
       }
       if (req.body.payment_mode == "pay") {
@@ -509,7 +476,7 @@ const postCheckOut = async (req, res) => {
 
         instance.orders.create(options, function(err, order) {
           if(err){
-          console.log(err);
+          res.json({fail:true})
           console.log('online payment error');
           }else{
             // console.log(order);
@@ -519,59 +486,6 @@ const postCheckOut = async (req, res) => {
         });
       }
       }
-    // } else {
-    //   if (req.body.payment_mode == "COD") {
-    //     const productData = await cart.aggregate([
-    //       { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
-    //       { $unwind: "$cartItem" },
-    //       {
-    //         $project: {
-    //           _id: 0,
-    //           productId: "$cartItem.productId",
-    //           quantity: "$cartItem.qty",
-    //         },
-    //       },
-    //     ]);
-    //     const address = await customer.aggregate([
-    //       { $match: { _id: mongoose.Types.ObjectId(req.session.user) } },
-    //       { $unwind: "$address" },
-    //       {
-    //         $project: {
-    //           name: "$address.name",
-    //           addressline1: "$address.addressline1",
-    //           addressline2: "$address.addressline2",
-    //           district: "$address.distict",
-    //           state: "$address.state",
-    //           country: "$address.country",
-    //           pin: "$address.pin",
-    //           mobile: "$address.mobile",
-    //           id: "$address._id",
-    //         },
-    //       },
-    //       { $match: { id: mongoose.Types.ObjectId(req.body.address) } },
-    //     ]);
-    //     const orderDetails = new order({
-    //       userId: req.session.user,
-    //       name: address[0].name,
-    //       number: address[0].mobile,
-    //       address: {
-    //         addressline1: address[0].addressline1,
-    //         addressline2: address[0].addressline2,
-    //         district: address[0].district,
-    //         state: address[0].state,
-    //         country: address[0].country,
-    //         pin: address[0].pin,
-    //       },
-    //       orderItems: productData,
-    //       totalAmount: subtotal,
-    //       paymentMethod: "COD",
-    //     });
-    //     await orderDetails.save();
-    //     res.redirect('/')
-    //   } else {
-    //     console.log("choose address online payment");
-    //   }
-    // }
   } catch (error) {
     console.log(error);
   }
@@ -589,23 +503,50 @@ try{
   if (hmac == details.payment.razorpay_signature) {
     if ( 'couponUsed' in orderDetails){
       await coupon.updateOne({_id:orderDetails.couponUsed}, { $push: { users: { userId:req.session.user} } })
+
     orderDetails=new order(orderDetails)
       await orderDetails.save()
     res.json({success:true})
     }else{
+     let productDetails=orderDetails.orderItems
+      for(let i =0;i<productDetails.length;i++){
+          await product.updateOne({_id:productDetails[i]},{$inc:{stock:-(productDetails.quantity[i])}})
+      }
+      console.log(productDetails);
       orderDetails=new order(orderDetails)
       await orderDetails.save()
       res.json({success:true})
     }
   } else {
     console.log(err);
-    res.json({ status: false, err_message: "payment failed" });
+    res.json({ failed:true});
   }
 }catch(error){
   console.log(error)
 }
 }
 
+const paymentSuccess=async (req,res)=>{
+try{
+    const user = await customer.findOne({ _id: req.session.user });
+    const brands = await product.distinct("brand");
+    const categories = await category.find({ status: true });
+    res.render('../views/user/paymentSuccess.ejs',{user,brands,categories})
+}catch(error){
+  console.log(error);
+}
+}
+
+const paymentFail=async (req,res)=>{
+  try{
+      const user = await customer.findOne({ _id: req.session.user });
+      const brands = await product.distinct("brand");
+      const categories = await category.find({ status: true });
+      res.render('../views/user/paymentFail.ejs',{user,brands,categories})
+  }catch(error){
+    console.log(error);
+  }
+  }
 
 
 const viewWishlist=async (req,res)=>{
@@ -804,5 +745,7 @@ module.exports = {
   addWishlist,
   setAddressCheckout,
   couponCheck,
-  verifyPayment
+  verifyPayment,
+  paymentSuccess,
+  paymentFail
 };

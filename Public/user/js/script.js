@@ -343,15 +343,17 @@ $(document).ready(function() {
             url: '/checkout',
             data: formData,
             success:  (response) => {
-                if (response.success) {
-                    location.href = "/ordersuccess";
+                if (response.fail) {
+                    location.href = "/payment_fail";
+                  }
+                  else if(response.codSuccess){
+                    location.href = "/payment_succuss";
                   } else {
-                    console.log(response.order);
-                    console.log(response.orderDetails);
+                    // console.log(response.order);
+                    // console.log(response.orderDetails);
                     let order=response.order
                     let orderDetails=response.orderDetails
                     razorPay(order,orderDetails);
-
                   }
             }
         });
@@ -394,7 +396,7 @@ rzp1.on('payment.failed', function (response){
         // alert(response.error.reason);
         // alert(response.error.metadata.order_id);
         // alert(response.error.metadata.payment_id);
-        location.href = "/paymentFail";
+        location.href = "/payment_fail";
 });
 rzp1.open()
 
@@ -415,9 +417,9 @@ function verifyPayment(payment, order,orderDetails) {
         method: "post",
         success: (response) => {
             if (response.success) {
-                location.href = "/orderSuccess";
+                location.href = "/payment_succuss";
             } else {
-                location.href = "/paymentFail";
+                location.href = "/payment_fail";
             }
         },
     });

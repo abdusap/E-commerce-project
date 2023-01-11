@@ -73,6 +73,10 @@ router.get('/order/cancel_orders',session.isLogin,user.cancelOrder)
 
 router.post('/verifyPayment',session.isLogin,shop.verifyPayment)
 
+router.get('/payment_succuss',session.isLogin,shop.paymentSuccess)
+
+router.get('/payment_fail',session.isLogin,shop.paymentFail)
+
 
 
 

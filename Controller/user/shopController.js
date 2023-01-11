@@ -331,12 +331,12 @@ const postCheckOut = async (req, res) => {
         // console.log(orderDetails);
         await orderDetails.save();
         let productDetails=productData
-    //     console.log(productDetails);
-    // for(let i =0;i<productDetails.length;i++){
-    //     await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
-    // }
+        // console.log(productDetails);
+    for(let i =0;i<productDetails.length;i++){
+        await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
+    }
   
-        res.json({codSuccess:true})
+        res.json({CODSuccess:true})
         // location.href = "/payment_fail";
         // res.redirect('/')
       }else{

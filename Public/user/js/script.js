@@ -346,7 +346,7 @@ $(document).ready(function() {
                 if (response.fail) {
                     location.href = "/payment_fail";
                   }
-                  else if(response.codSuccess){
+                  else if(response.CODSuccess){
                     location.href = "/payment_succuss";
                   } else {
                     // console.log(response.order);

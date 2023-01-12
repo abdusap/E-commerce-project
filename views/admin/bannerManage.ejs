@@ -109,7 +109,7 @@
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Add Category
+    Add Banner
   </button>
   
   <!-- Modal -->
@@ -117,16 +117,18 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Add Category</h5>
+          <h5 class="modal-title" id="staticBackdropLabel">Add Banner</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="/admin/addcategory" method="post">
+            <form action="/admin/banner" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                   <!-- <label for="exampleFormControlFile1">Example file input</label>
                   <input type="file" class="form-control-file" id="exampleFormControlFile1"> -->
-                  <label for="exampleFormControlInput1">Category Name</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
+                  <label for="exampleFormControlInput1">Banner Name</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
+                  <label for="exampleFormControlInput1">Images</label>
+                  <input type="file" class="form-control" id="exampleFormControlInput1" placeholder="images" name="image" multiple>
                 </div>
               
         </div>
@@ -147,15 +149,16 @@
   <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Category DataTable 
+        Banner DataTable 
     </div>
     <div class="card-body">
-        <% if(details!=null) { %>
+       <% if(bannerDetails!=null){ %>
         <table id="datatablesSimple">
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Name</th>                  
+                    <th>image</th>
+                    <th>Name</th>                     
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -163,43 +166,46 @@
             <tfoot>
                 <tr>
                     <th>No.</th>
-                    <th>Name</th>
+                    <th>image</th>
+                    <th>Name</th>                     
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </tfoot>
             <tbody>
-                <% details.forEach((userdata,index)=>{ %>
+                <% bannerDetails.forEach((data,i)=>{ %>
               <tr>
                 
-                <th scope="row"><%= index+1 %></th>
-                <td><%=userdata.name%></td>
+                <th scope="row"><%= (i+1) %></th>
+                <td> <img src="/Public/admin/product/<%=data.image[0].filename %>" alt="" style="width:50px;height:50px;"></td>
                 
+                    <td>
+                        <%=data.name%>
+                    </td>
+                    
                 <td>
-                    <%if(userdata.status==true){%> 
+                  <% if(data.status==true){ %>
                         <p class="text-success">Active</p>
-                        <%} else {%>
+                  <% } else { %>
                             <p class="text-danger">Blocked</p>
-                            <%}%>
+                  <% } %>
                             
 
                 </td>
                 <td>
-                    <%if(userdata.status==true){%> 
-                      <a href="/admin/category-block?id=<%=userdata._id%>" onclick="return confirm('Are you sure, change access to category <%=userdata.name%>')"><button type="button" class="btn btn-danger" style="width: 100px;">Block</button></a>
-                        <%} else {%>
-                           <a href="/admin/category-block?id=<%=userdata._id%> " onclick="return confirm('Are you sure, change access to category <%=userdata.name%>')"><button type="button" class="btn btn-success" style="width: 100px;">Unblock</button></a> 
-                            
-                            <%}%>
-                            <a href="/admin/category/edit?id=<%=userdata._id%>" onclick="return confirm('Are you sure to edit  <%=userdata.name%>')"><button type="button" class="btn btn-outline-primary">Edit</button></a> 
-                            <a href="/admin/category-delete?id=<%=userdata._id%>" onclick="return confirm('Are you sure to delete <%=userdata.name%>')"><button type="button" class="btn btn-outline-danger">Delete</button></a> 
+                    <% if(data.status==true){ %>
+                      <a href="/admin/banner_block?id=<%=data._id%>" onclick="return confirm('Are you sure, change access to banner ')"><button type="button" class="btn btn-danger" style="width: 100px;">Block</button></a>
+                      <% } else { %>
+                           <a href="/admin/banner_block?id=<%=data._id%> " onclick="return confirm('Are you sure, change access to banner ')"><button type="button" class="btn btn-success" style="width: 100px;">Unblock</button></a> 
+                           <% } %>  
+                        
                    
                 </td>
               </tr>
-              <%})%>
+           <% }) %>
             </tbody>
         </table>
-        <%}%>
+      <% } %>
     </div>
 </div>
 

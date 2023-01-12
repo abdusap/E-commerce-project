@@ -5,6 +5,7 @@ const category = require("../../Model/categoryModel");
 const product = require("../../Model/productModel");
 const cart = require("../../Model/cartModal");
 const orders = require("../../Model/orderModel");
+const banner = require("../../Model/bannerModel");
 const mongoose = require("mongoose");
 const { findOne } = require("../../Model/customerModel");
 require('dotenv').config()
@@ -44,7 +45,6 @@ const userVerfication = async (req, res) => {
         );
         if (hashedCheck == true) {
           req.session.user=userFind._id
-          // console.log(req.session.user);
           res.redirect("/");
         } else {
           res.redirect("/login?wrong=Wrong Email or Password");
@@ -82,7 +82,6 @@ const userVerfication = async (req, res) => {
         });
       } else {
         const tempOTP = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-        // console.log(tempOTP);
         req.session.tempOTP = tempOTP;
 
         // Transporter
@@ -155,7 +154,9 @@ const home = async (req, res) => {
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
     const user=await customer.findOne({_id: req.session.user})
-    res.render("../views/user/home.ejs", { brands, categories ,user});
+    const bannerData=await banner.find({ status: true})
+    // console.log(bannerData);
+    res.render("../views/user/home.ejs", { brands, categories ,user,bannerData});
   } catch (error) {
     console.log(error);
   }
@@ -282,7 +283,7 @@ let id
       { $set: { "address.$[elem].status": false } },
       { arrayFilters: [ { "elem.status": true } ] }
     ) 
-  await customer.updateOne(
+    await customer.updateOne(
       { _id: req.session.user, "address._id": id },
       { $set: { "address.$.status": true } }
      )
@@ -291,7 +292,7 @@ let id
    
    const profileEdit=async (req,res)=>{
   try{
-  if(req.body.name && req.body.current_password && req.body.new_password){
+  // if(req.body.name && req.body.current_password && req.body.new_password){
     const userDetails=await customer.findOne({_id : req.session.user})
     const hashedCheck = await bcrypt.compare(
          req.body.current_password,
@@ -304,10 +305,10 @@ let id
        }else{
         res.redirect('/profile?wrong=current password is incorrect')
        }
-  }else{
-    await customer.updateOne({ _id : req.session.user }, { $set: { name : req.body.name } })
-    res.redirect('/profile?success=Name changed successfully')
-  }
+  // }else{
+  //   await customer.updateOne({ _id : req.session.user }, { $set: { name : req.body.name } })
+  //   res.redirect('/profile?success=Name changed successfully')
+  // }
 }catch(error){
   console.log(error);
 }
@@ -380,6 +381,14 @@ const cancelOrder=async (req,res)=>{
   }
 }
 
+const errorPage=(req,res)=>{
+  try{
+   res.render('../views/user/errorPage.ejs')
+  }catch(error){
+    console.log(error);
+  }
+}
+
 
   module.exports = {
     login,
@@ -398,5 +407,6 @@ const cancelOrder=async (req,res)=>{
     profileEdit,
     orderPage,
     viewOrderDetails,
-    cancelOrder
+    cancelOrder,
+    errorPage
   }

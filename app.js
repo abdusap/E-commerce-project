@@ -5,7 +5,6 @@ const path=require('path')
 const fileupload=require('express-fileupload')
 const userRoute=require('./Routes/userRoute')
 const adminRoute=require('./Routes/adminRoute')
-// const config=require('./Config/config')
 require('dotenv').config()
 
 // Database section
@@ -27,31 +26,34 @@ app.use(session({
 }))
 
 
-
-// for parsing the url to json,string or array format
+// For parsing the url to json,string or array format
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// port specified
-const port= process.env.PORT
 
-const staticPath=path.join(__dirname,'Public')
+// Port specified
+const port= process.env.PORT
 
 
 //  Setting view Engine
 app.set('view engine', 'ejs')
 
 // for adding external files to view engine
+const staticPath=path.join(__dirname,'Public')
 app.use(express.static(staticPath))
 app.use("/Public", express.static(path.join(__dirname, "Public")));
+ 
 
-
-// routing
-// app.use('/',userRoute)
-
+// For routing to user side
 app.use('/',userRoute)
 
+// For routing to admin side
 app.use('/admin',adminRoute)
 
+// For Error 404 
+app.use('*',(req,res)=>{
+  res.redirect('/404')
+}) 
 
+// For post listening
 app.listen(port,()=>console.log(`Server is running at  http://localhost:${port}`))

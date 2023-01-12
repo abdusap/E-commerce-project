@@ -67,7 +67,7 @@ const userCart = async (req, res) => {
 
 
 
-const add_to_cart=async (req,res)=>{
+const addToCart=async (req,res)=>{
   try{
     const proId= req.body.Id  
     const Id=mongoose.Types.ObjectId(proId)
@@ -110,7 +110,6 @@ const add_to_cart=async (req,res)=>{
           await addCart.save()
           const cartData =await cart.findOne({userId:id})
                const count=cartData.cartItem.length
-              //  console.log(count);  
           res.json({success:true,count})
       }
       }else{
@@ -139,16 +138,12 @@ const productQtyAdd = async (req, res) => {
     const proId=data.Id
     const qty=parseInt(data.qty)
     const productData=await product.findOne({_id:proId})
-    if (productData.stock>0 ){
-         if( qty < 10){
+    if (productData.stock>qty ){
           const price=productData.price
           await cart.updateOne(
                { userId: req.session.user, "cartItem.productId": proId },
                { $inc: { "cartItem.$.qty": 1 } })
               res.json({price})
-         }else{
-          res.json({limit:true})
-         }
     }else{
       res.json({outStock:true})
     }
@@ -257,8 +252,6 @@ const checkOut = async (req, res) => {
 
 const postCheckOut = async (req, res) => {
   try {
-    // if (req.body.address == "") {
-      // console.log("hau");
       if (req.body.payment_mode == "COD") {
         const productData = await cart.aggregate([
           { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
@@ -307,8 +300,6 @@ const postCheckOut = async (req, res) => {
           acc = acc + curr.total;
           return acc;
         }, 0);
-        // console.log(req.body);
-        // console.log(subtotal)
         if (req.body.couponid === ''){
      
         const orderDetails = new order({
@@ -328,17 +319,13 @@ const postCheckOut = async (req, res) => {
           totalAmount: subtotal,
           paymentMethod: "COD",
         });
-        // console.log(orderDetails);
         await orderDetails.save();
         let productDetails=productData
-        // console.log(productDetails);
     for(let i =0;i<productDetails.length;i++){
         await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
     }
-  
+    await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
         res.json({CODSuccess:true})
-        // location.href = "/payment_fail";
-        // res.redirect('/')
       }else{
         await coupon.updateOne({_id:req.body.couponid}, { $push: { users: { userId:req.session.user} } })
 
@@ -360,10 +347,13 @@ const postCheckOut = async (req, res) => {
           totalAmount: req.body.total,
           paymentMethod: "COD",
         });
-        // console.log(orderDetails);
         await orderDetails.save();
-        res.json({codSuccess:true})
-        // location.href = "/payment_fail";
+        let productDetails=productData
+    for(let i =0;i<productDetails.length;i++){
+        await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
+    }
+    await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
+        res.json({CODSuccess:true})
       }
       }
       if (req.body.payment_mode == "pay") {
@@ -414,8 +404,6 @@ const postCheckOut = async (req, res) => {
           acc = acc + curr.total;
           return acc;
         }, 0);
-        // console.log(req.body);
-        // console.log(subtotal)
         if (req.body.couponid === ''){
         const orderDetails =({
           userId: req.session.user,
@@ -444,8 +432,8 @@ const postCheckOut = async (req, res) => {
           if(err){
           console.log(err);
           console.log('online payment error');
+          res.json({fail:true})
           }else{
-            // console.log(order);
             res.json({order,orderDetails})
           }
         });
@@ -473,15 +461,13 @@ const postCheckOut = async (req, res) => {
           currency: "INR",
           receipt: "order_rcptid_11"
         };
-
-        instance.orders.create(options, function(err, order) {
+         instance.orders.create(options, function(err, order) {
           if(err){
-          res.json({fail:true})
+          console.log(err);
           console.log('online payment error');
+          res.json({fail:true})
           }else{
-            // console.log(order);
             res.json({order,orderDetails})
-            console.log('online payment');
           }
         });
       }
@@ -503,16 +489,20 @@ try{
   if (hmac == details.payment.razorpay_signature) {
     if ( 'couponUsed' in orderDetails){
       await coupon.updateOne({_id:orderDetails.couponUsed}, { $push: { users: { userId:req.session.user} } })
-
+      let productDetails=orderDetails.orderItems
+      for(let i =0;i<productDetails.length;i++){
+       await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
+   }
+   await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
     orderDetails=new order(orderDetails)
       await orderDetails.save()
     res.json({success:true})
     }else{
      let productDetails=orderDetails.orderItems
-      for(let i =0;i<productDetails.length;i++){
-          await product.updateOne({_id:productDetails[i]},{$inc:{stock:-(productDetails.quantity[i])}})
-      }
-      console.log(productDetails);
+     for(let i =0;i<productDetails.length;i++){
+      await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
+  }
+  await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
       orderDetails=new order(orderDetails)
       await orderDetails.save()
       res.json({success:true})
@@ -600,10 +590,7 @@ const addWishlist = async(req,res)=>{
   try {
       const data = req.body
       const id = data.prodId
-    
-      // console.log(id);
       const userId = req.session.user;
-      // console.log(userId);
       const Id = mongoose.Types.ObjectId(userId)
       const wish = await wishlist.findOne({userId:Id})
       if(wish){
@@ -620,15 +607,11 @@ const addWishlist = async(req,res)=>{
               {
                   $push:{wishList:{ productId:id } },
               }
-              // ).then(()=>{
-              //     res.redirect('/product')
-              // })
           )
           const wishlistData =await wishlist.findOne({userId:Id})
                const count=wishlistData.wishList.length
                console.log(count);             
               res.json({success:true,count})
-
          } 
       }else{
           const addWish = new wishlist({
@@ -638,13 +621,8 @@ const addWishlist = async(req,res)=>{
           await addWish.save()
           const wishlistData =await wishlist.findOne({userId:Id})
                const count=wishlistData.wishList.length
-              //  console.log(count);  
           res.json({success:true,count})
-
-
-      }
-
-     
+      }    
   } catch (error) {
       console.log(error.message);
   }
@@ -653,9 +631,7 @@ const addWishlist = async(req,res)=>{
 
 const setAddressCheckout=async (req,res)=>{
   try{
-  //  console.log(req.body.addresId);
    const addresId=req.body.addresId
-  //  console.log(addresId);
    const address = await customer.aggregate([
     { $match: { _id: mongoose.Types.ObjectId(req.session.user) } },
     { $unwind: "$address" },
@@ -674,7 +650,6 @@ const setAddressCheckout=async (req,res)=>{
     },
     { $match: { _id: new mongoose.Types.ObjectId(addresId)} },
   ]);
-  // console.log(address);
   res.json({data:address})
   }catch(error){
     console.log(error);
@@ -683,8 +658,6 @@ const setAddressCheckout=async (req,res)=>{
 
 const couponCheck=async (req,res)=>{
   try{
-    // console.log('dp');
-    // console.log(req.body.input);
     const code=req.body.input
     let total=req.body.total
     total=parseInt(total)
@@ -696,7 +669,6 @@ const couponCheck=async (req,res)=>{
           id = mongoose.Types.ObjectId(req.session.user)
           // const userExist = couponExist.users.findIndex((couponExist) => couponExist.users == id);
           coupon.findOne({code:code},{users:{$elemMatch:{userId: id}}}).then((exist)=>{
-            // console.log(exist);
             if(exist.users.length===0){
               if(total>=couponExist.minAmount){
                 res.json({couponApplied:couponExist})
@@ -706,24 +678,17 @@ const couponCheck=async (req,res)=>{
               }
               
             }else{
-              // console.log('illa');
-              // user ind
               res.json({userUsed:true})
             }
           })
-          // console.log(userExist);
-          // the coupon is valid
         } else {
           res.json({expired:true})
           
         }
-          // res.json({exist:'hai'})
       }else{
            res.json({notExist:true})
       }
-    //  console.log(couponExist);
     })
-    // console.log(req.body.data.couponCheck)
   }catch(error){
     console.log(error);
   }
@@ -734,8 +699,7 @@ const couponCheck=async (req,res)=>{
 
 module.exports = {
   userCart,
-  // addToCart,
-  add_to_cart,
+  addToCart,
   cartDelete,
   productQtyAdd,
   productQtySub,

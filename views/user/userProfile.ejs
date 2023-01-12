@@ -26,7 +26,7 @@
                                 <a class="nav-link active" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+                                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Addresses</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a class="nav-link " id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
@@ -36,7 +36,7 @@
                                 <a class="nav-link" id="tab-orders-link"  href="/order" >Orders</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Downloads</a>
+                                <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Change Password</a>
                             </li>
                             
                             
@@ -57,68 +57,25 @@
                             <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
                                 <p>No order has been made yet.</p>
                               
-                                <div class="table-responsive">
-                                    <table class="table">
-                                      <thead>
-                                        <tr>
-                                          <th scope="col">#</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                          <th scope="col">Heading</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr>
-                                          <th scope="row">1</th>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row">2</th>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                        </tr>
-                                        <tr>
-                                          <th scope="row">3</th>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                          <td>Cell</td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                         
+                                <a href="/" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
                             </div><!-- .End .tab-pane -->
 
                             <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
-                                <p>No downloads available yet.</p>
-                                <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                                <form action="/profileedit" method="post">
+                                <label>Current password (leave blank to leave unchanged)</label>
+                                    <input type="password" class="form-control" name="current_password">
+
+                                    <label>New password (leave blank to leave unchanged)</label>
+                                    <input type="password" class="form-control" id="password"  name="new_password">
+
+                                    <label>Confirm new password</label>
+                                    <input type="password" class="form-control mb-2" id="confirm_password" >
+                                    <button type="submit" class="btn btn-outline-primary-2">
+                                        <span>SAVE CHANGES</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </button>
+                                    </form>
                             </div><!-- .End .tab-pane -->
 
                             <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
@@ -126,8 +83,9 @@
 
                                 <div class="row">
                                    <% address.forEach((data)=>{ %>
+                                   <% if(data.status==true){ %>
                                     <div class="col-lg-6">
-                                        <div class="card card-dashboard">
+                                        <div class="card card-dashboard" style="background-color: wheat;">
                                             <div class="card-body">
                                                 <a href="/address-delete?id=<%=data._id%>" style="float: right;">Delete <i class="icon-delete"></i></a></p> 
                                                 <h3 class="card-title">Address</h3><!-- End .card-title -->
@@ -146,6 +104,28 @@
                                             </div><!-- End .card-body -->
                                         </div><!-- End .card-dashboard -->
                                     </div><!-- End .col-lg-6 -->
+                                    <% } else { %>
+                                        <div class="col-lg-6">
+                                            <div class="card card-dashboard">
+                                                <div class="card-body">
+                                                    <a href="/address-delete?id=<%=data._id%>" style="float: right;">Delete <i class="icon-delete"></i></a></p> 
+                                                    <h3 class="card-title">Address</h3><!-- End .card-title -->
+                                                    <!-- <a href="#" style="float: right;">Edit <i class="icon-edit"></i></a></p>  -->
+                                                        </p><span style="font-weight:bold">Name : </span><%=data.name%><br>
+                                                        <span style="font-weight:bold">Address Line 1 : </span> <%=data.addressline1%><br>
+                                                        <span style="font-weight:bold">Address Line 2 : </span><%=data.addressline2%><br>
+                                                        <span style="font-weight:bold">District : </span><%=data.district%><br>
+                                                        <span style="font-weight:bold">State : </span><%=data.state%><br>
+                                                        <span style="font-weight:bold">Country : </span><%=data.country%><br>
+                                                        <span style="font-weight:bold">PIN No : </span> <%=data.pin%><br>
+                                                        <span style="font-weight:bold">Mobile : </span> <%=data.mobile%><br>
+                                                    <a href="/address-default?id=<%=data._id%>" style="float: right;">Set as default <i class="icon-address"></i></a></p> 
+                                                    <!-- <p>fdf</p> -->
+                                                    <a href="/profile/address-edit?id=<%=data._id%>" sty>Edit <i class="icon-edit"></i></a></p>
+                                                </div><!-- End .card-body -->
+                                            </div><!-- End .card-dashboard -->
+                                        </div><!-- End .col-lg-6 -->
+                                        <% } %>
                                     <% }) %>
 
 
@@ -256,10 +236,10 @@
                                     <label>Mobile </label>
                                     <input readonly type="text" class="form-control"  value="<%=userDetails.mobile%>">
                                        
-                                    <label>Current password (leave blank to leave unchanged)</label>
-                                    <input type="password" class="form-control" name="current_password">
+                                    <!-- <label>Current password (leave blank to leave unchanged)</label>
+                                    <input type="password" class="form-control" name="current_password"> -->
 
-                                    <label>New password (leave blank to leave unchanged)</label>
+                                    <!-- <label>New password (leave blank to leave unchanged)</label>
                                     <input type="password" class="form-control" id="password"  name="new_password">
 
                                     <label>Confirm new password</label>
@@ -268,10 +248,10 @@
                                     <button type="submit" class="btn btn-outline-primary-2">
                                         <span>SAVE CHANGES</span>
                                         <i class="icon-long-arrow-right"></i>
-                                    </button>
+                                    </button> -->
                                 </form>
                                 <div class="col-lg-6 pt-3">
-                                    <div class="card card-dashboard">
+                                    <div class="card card-dashboard" style="background-color: wheat;">
                                         <div class="card-body">
                                             <h3 class="card-title">Default Address</h3><!-- End .card-title -->
                                                 <%  if(address.length != 0){ %>

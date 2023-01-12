@@ -20,8 +20,6 @@ const orderManage=async (req,res)=>{
                 orderstatus:"$orderStatus"
             }}
         ])
-        // console.log(orderDetails);
-        // const coupons=await coupon.find()
       res.render('../views/admin/orderManage.ejs',{orderDetails})
     }catch(error){
         console.log(error);
@@ -30,13 +28,8 @@ const orderManage=async (req,res)=>{
 
 const orderUpdate=async (req,res)=>{
     try{
-// console.log(req.body);
 let id=req.body.orderid
-// id=String(id)
-// id=mongoose.Types.ObjectId(id)
 const status=req.body.orderstatus
-// console.log(id);
-// console.log(status);
 await order.updateOne({ _id : id },{ $set: { orderStatus: status }})
 res.redirect('/admin/order')
     }catch(error){

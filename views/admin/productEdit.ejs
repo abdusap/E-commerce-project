@@ -85,6 +85,10 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Order Management
                         </a>
+                        <a class="nav-link" href="/admin/banner">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Banner Management
+                        </a>
                         <!-- <a class="nav-link" href="tables.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Coupens
@@ -116,10 +120,11 @@
                                         <!-- <div class="form-group col-md-4"> -->
                                             <label for="inputState">Category</label>
                                             <select id="inputState" class="form-control" name="category">
-                                            <option ><%=productData[0].catData[0].name%></option>
+                                            <option selected><%=productData[0].catData[0].name%></option>
                                             <% categoryData.forEach((data)=>{ %> 
-
+                                                <% if (data.name!=productData[0].catData[0].name){ %>
                                              <option><%=data.name%></option> 
+                                             <% } %>
                                              <%})%>
                                             </select>
                                         <!-- </div>   -->

@@ -1,23 +1,4 @@
-// function addToCart(proId){
-    // console.log(proId);
-    // $.ajax({
-    //     url:'/addtocart',
-    //     method:'post',
-    //     data:{
-    //         Id:proId
-    //     },
-    //     success:(response)=>{
-            // console.log(res.cout)
-            // if(response.cout){
-            //     let count=response.cout
-                // let exist1=response.exist
-                // console.log(exist1)
-                // console.log(count)
-//                 $("#cart_count").html(count)
-//             }
-//         }
-//     })
-// }
+
 function add_to_cart(proId){
     $.ajax({
         url:'/add_to_cart',
@@ -33,12 +14,6 @@ function add_to_cart(proId){
                         title: 'Product Already in Cart..!',
                         showConfirmButton: false,
                         timer: 1500
-                    // title: "Product Already in Wishlist..!",
-                    // icon: "warning",
-                    // confirmButtonText: false,
-                    // timer: 1000
-                //   }).then(function () {
-                //     location.reload();
                   });
                 
                 }
@@ -105,15 +80,6 @@ function addQty(proId,position){
                         timer: 1500
                 })
             }
-            if(response.limit){
-                Swal.fire({
-                    position: 'center',
-                        icon: 'warning',
-                        title: 'Limit Exist..!',
-                        showConfirmButton: false,
-                        timer: 1500
-                })
-            }
             }
         }
     )
@@ -159,7 +125,7 @@ function subQty(proId,position){
                 Swal.fire({
                     position: 'center',
                         icon: 'warning',
-                        title: 'Limit Exist..!',
+                        title: 'Minimum one require..!',
                         showConfirmButton: false,
                         timer: 1500
                 })
@@ -172,7 +138,6 @@ function subQty(proId,position){
 
 
 function addToWishlist(id){
-    // console.log(id);
     $.ajax({
         url:'/addTowishlist',
         method:'post',
@@ -188,14 +153,7 @@ function addToWishlist(id){
                         title: 'Product Already in Wishlist..!',
                         showConfirmButton: false,
                         timer: 1500
-                    // title: "Product Already in Wishlist..!",
-                    // icon: "warning",
-                    // confirmButtonText: false,
-                    // timer: 1000
-                //   }).then(function () {
-                //     location.reload();
-                  });
-                
+                  });             
                 }
                 if(response.success){
                     Swal.fire({
@@ -212,7 +170,6 @@ function addToWishlist(id){
           
         }
     })
-    // console.log(data);
 
 }
 
@@ -224,7 +181,6 @@ function setaddress(id){
             addresId : id
         },
         success:(response)=>{
-            console.log(response.data);
             $("#adres_name").val(response.data[0].name);
             $("#adres_line1").val(response.data[0].addressline1);
             $("#adres_line2").val(response.data[0].addressline2);
@@ -239,40 +195,7 @@ function setaddress(id){
     })
 }
 
-// $('select').on('change', function() {
-//     alert( this.value );
-//   });
 
-// function couponCheck(){
-    // document.getElementById('coupon_button').addEventListener('click', function() {
-        // var inputValue = document.getElementById('couponCode').value;
-        // console.log(inputValue);
-    //   });
-    // $.ajax({
-    //     url:'/coupon_check',
-    //     method:'patch',
-    //     data : {
-    //         couponCode : $("#couponCode").val(),
-            // value: inputValue
-//         },
-//     })
-// }
-
-// $("#coupon_button").click(function() {
-//     // get the value of the input field
-//     var inputValue = $("#couponCode").val();
-
-//     // create an AJAX request
-//     $.ajax({
-//       type: "post",
-//       url: "/coupon_check",
-//       data: { input: inputValue },
-//       success: function(response) {
-//         // update the page with the response
-//         // $("#response").html(response);
-//       }
-//     });
-//   });
 
   $("#coupon_button").click(function(event) {
     // prevent the form from being submitted
@@ -285,23 +208,22 @@ function setaddress(id){
     $.ajax({
       type: "post",
       url: "/coupon_check",
-      data: { input: inputValue,total:$('#total').html() },
+      data: { input: inputValue,total:$('#subtotal').html() },
       success: function(response) {
         if(response.couponApplied){
         $('#message').html('Coupon Applied').css('color', 'green');
         let discount=response.couponApplied.discount
         let code=response.couponApplied.code
         let couponId=response.couponApplied._id
-        let total=$('#total').html()
         let subtotal=$('#subtotal').html()
         discount=parseInt(discount)
-        total=parseInt(total)
-        let discountedPrice=(discount*total)/100
-        total=total-discountedPrice
-        $('#total').html(total)
+        subtotal=parseInt(subtotal)
+        let discountedPrice=(discount*subtotal)/100
+        subtotal=subtotal-discountedPrice
+        $('#total').html(subtotal)
         $('#coupon_code').html(code)
         $('#couponId').val(couponId)
-        $('#total_amount').val(total)
+        $('#total_amount').val(subtotal)
         }
         if(response.notExist){
             $('#message').html('Coupon Not Found!!').css('color', 'red');
@@ -315,24 +237,13 @@ function setaddress(id){
         if(response.minAmount){
             let minAmount=response.minAmount
             $('#message').html('Minimum '+minAmount+' required!!').css('color', 'red');  
-        }
-        // update the page with the response
-        // $("#response").html(response);
+        }  
       }
     });
   });
   
 
-//   function payment(){
-//     console.log(req.body);
-//     $.ajax({
-//         url:'/checkout',
-//         method:'post',
-//         data :{
 
-//         }
-//     })
-//   }
 
 $(document).ready(function() {
     $('#myForm').submit(function(e) {
@@ -349,8 +260,6 @@ $(document).ready(function() {
                   else if(response.CODSuccess){
                     location.href = "/payment_succuss";
                   } else {
-                    // console.log(response.order);
-                    // console.log(response.orderDetails);
                     let order=response.order
                     let orderDetails=response.orderDetails
                     razorPay(order,orderDetails);
@@ -370,9 +279,6 @@ var options = {
     "image": "https://example.com/your_logo",
     "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": function (response){
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature)
         verifyPayment(response, order,orderDetails)
     },
     "prefill": {
@@ -389,13 +295,6 @@ var options = {
 };
 var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
-        // alert(response.error.code);
-        // alert(response.error.description);
-        // alert(response.error.source);
-        // alert(response.error.step);
-        // alert(response.error.reason);
-        // alert(response.error.metadata.order_id);
-        // alert(response.error.metadata.payment_id);
         location.href = "/payment_fail";
 });
 rzp1.open()
@@ -404,8 +303,6 @@ rzp1.open()
 
 
 function verifyPayment(payment, order,orderDetails) {
-    // console.log(payment)
-    // console.log(order)
 
     $.ajax({
         url: "/verifyPayment",
@@ -424,22 +321,3 @@ function verifyPayment(payment, order,orderDetails) {
         },
     });
 }
-//   function verifyPayment(payment, order) {
-//     $.ajax({
-//       url: "/verifypayment",
-//       data: {
-//         payment,
-//         order,
-//       },
-//       method: "post",
-//       success: (response) => {
-//         if (response.success) {
-//           console.log("succes");
-//           location.href = "/ordersuccess";
-//         } else {
-//           console.log("fail");
-//           location.href = "/cart";
-//         }
-//       },
-//     });
-//   }

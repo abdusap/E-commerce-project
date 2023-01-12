@@ -24,7 +24,6 @@ const addCoupon=(req,res)=>{
         })
         newCoupon.save()
         res.redirect("/admin/coupon")
-        // console.log(newCoupon);
     }catch(error){
         console.log(error);
     }

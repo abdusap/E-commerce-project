@@ -62,7 +62,7 @@
 										<p style="color:  red;"><%=locals.wrong%></p>
 							    		<div class="form-group">
 							    			<label for="register-email-2">Your email address *</label>
-							    			<input type="email" class="form-control" id="register-email-2" name="email" required>
+							    			<input type="email" class="form-control" id="register-email-2" name="email" pattern="^(([-\w\d]+)(\.[-\w\d]+)*@([-\w\d]+)(\.[-\w\d]+)*(\.([a-zA-Z]{2,5}|[\d]{1,3})){1,2})$" required>
 							    		</div><!-- End .form-group -->
 
 							    		<div class="form-group">

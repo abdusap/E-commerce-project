@@ -6,6 +6,7 @@ const customerController=require('../Controller/admin/customerController')
 const productController=require('../Controller/admin/productController')
 const couponController=require('../Controller/admin/couponController')
 const orderController=require('../Controller/admin/orderController')
+const bannerController=require('../Controller/admin/bannerController')
 const adminSession=require('../Middleware/adminSession')
 const upload = require('../Middleware/uploadFile')
 
@@ -39,7 +40,7 @@ router.get('/product/edit',adminSession.isLogin,productController.productEdit)
 
 router.get('/product-block',adminSession.isLogin,productController.productBlock)
 
-router.post('/edit',adminSession.isLogin,upload.array('image'),productController.postProductEdit)
+router.post('/edit',adminSession.isLogin,upload.array('image',12),productController.postProductEdit)
 
 router.get('/product-delete',adminSession.isLogin,productController.productDelete)
 
@@ -52,5 +53,11 @@ router.get('/coupon-block',adminSession.isLogin,couponController.block)
 router.get('/order',adminSession.isLogin,orderController.orderManage)
 
 router.post('/order',adminSession.isLogin,orderController.orderUpdate)
+
+router.get('/banner',adminSession.isLogin,bannerController.bannerManage)
+
+router.post('/banner',adminSession.isLogin,upload.array('image',12),bannerController.addBanner)
+
+router.get('/banner_block',adminSession.isLogin,bannerController.bannerBlock)
 
 module.exports=router

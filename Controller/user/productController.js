@@ -13,7 +13,7 @@ const productPage = async (req, res) => {
       const productList = await product.find({category : req.query.catId , brand : req.query.brand , status : true});
       res.render("../views/user/product.ejs", { productList, brands, categories ,user});
     }else{
-      const productList = await product.find( {category : req.query.catId , status : true});
+      const productList = await product.find({category : req.query.catId , status : true});
     res.render("../views/user/product.ejs", { productList, brands, categories ,user});
     }
     }catch(error){

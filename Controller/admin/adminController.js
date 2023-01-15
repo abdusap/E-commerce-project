@@ -1,5 +1,10 @@
 const admin = require("../../Model/adminModel");
+const customers=require("../../Model/customerModel")
+const products=require("../../Model/productModel")
+const orders=require("../../Model/orderModel")
+
 const mongoose = require("mongoose");
+const { order } = require("paypal-rest-sdk");
 
 
 // Admin login page
@@ -29,9 +34,18 @@ const adminVerification = async (req, res) => {
   };
 
   // Admin page
-const home = (req, res) => {
+const home =async (req, res) => {
     try {
-      res.render("../views/admin/home.ejs");
+const users=await customers.find().count()
+const productCount=await products.find().count()
+const totalOrder=await orders.find()
+const totalRevenue=totalOrder.reduce((acc,curr)=>{
+  acc=acc+curr.totalAmount
+  return acc
+},0)
+const cancelOrder=await orders.find({orderStatus:"cancelled"}).count()
+console.log(cancelOrder);
+      res.render("../views/admin/home.ejs",{users,productCount,cancelOrder,totalRevenue});
     } catch (error) {
       console.log(error);
     }

@@ -92,10 +92,10 @@
         <ul class="mobile-menu">
             <% categories.forEach((data)=>{ %>
             <li>
-                <a href="product.html" class="sf-with-ul"><%=data.name%></a>
+                <a href="/product?catId=<%=data._id%>" class="sf-with-ul"><%=data.name%></a>
                 <ul>
                     <% brands.forEach((brand)=>{%>
-                    <li><a href="product.html"><%=brand%></a></li>
+                    <li><a href="/product?catId=<%=data._id%>&brand=<%=brand%>"><%=brand%></a></li>
                    
                     <% }) %>
                 </ul>
@@ -119,16 +119,16 @@
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Plugins JS File -->
-<script src="/Public/user/js/jquery.min.js"></script>
+<!-- <script src="/Public/user/js/jquery.min.js"></script> -->
 <script src="/Public/user/js/bootstrap.bundle.min.js"></script>
-<script src="/Public/user/js/jquery.hoverIntent.min.js"></script>
+<!-- <script src="/Public/user/js/jquery.hoverIntent.min.js"></script> -->
 <script src="/Public/user/js/jquery.waypoints.min.js"></script>
-<script src="/Public/user/js/superfish.min.js"></script>
+<!-- <script src="/Public/user/js/superfish.min.js"></script> -->
 <script src="/Public/user/js/owl.carousel.min.js"></script>
 <!-- <script src="/Public/user/js/bootstrap-input-spinner.js"></script> -->
 <script src="/Public/user/js/jquery.elevateZoom.min.js"></script>
 <!-- <script src="/Public/user/js/bootstrap-input-spinner.js"></script> -->
-<script src="/Public/user/js/jquery.magnific-popup.min.js"></script>
+<!-- <script src="/Public/user/js/jquery.magnific-popup.min.js"></script> -->
 <!-- <script src="/Public/user/assets/js/nouislider.min.js"></script> -->
 <!-- <script src="/Public/user/assets/js/wNumb.js"></script> -->
 

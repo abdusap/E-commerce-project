@@ -7,8 +7,11 @@ const productController=require('../Controller/admin/productController')
 const couponController=require('../Controller/admin/couponController')
 const orderController=require('../Controller/admin/orderController')
 const bannerController=require('../Controller/admin/bannerController')
+const salesController=require('../Controller/admin/salesController')
 const adminSession=require('../Middleware/adminSession')
 const upload = require('../Middleware/uploadFile')
+const uploadbuffer =require("../Middleware/multerBuffer")
+
 
 router.get('/login',adminSession.isLogout,adminController.adminLogin)
 
@@ -59,5 +62,13 @@ router.get('/banner',adminSession.isLogin,bannerController.bannerManage)
 router.post('/banner',adminSession.isLogin,upload.array('image',12),bannerController.addBanner)
 
 router.get('/banner_block',adminSession.isLogin,bannerController.bannerBlock)
+
+router.get('/sales',adminSession.isLogin,salesController.salesPage)
+
+router.post('/sales',adminSession.isLogin,salesController.postPDFData)
+
+router.get('/pdf_download',adminSession.isLogin)
+
+
 
 module.exports=router

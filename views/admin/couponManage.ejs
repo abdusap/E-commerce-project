@@ -90,7 +90,7 @@
                             Banner Management
                         </a>
                         <a class="nav-link" href="/admin/sales">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-regular fa-file"></i></div>
                             Sales Report
                         </a>
                         <!-- <a class="nav-link" href="tables.html">
@@ -197,8 +197,14 @@
                     <td><%=data.name%></td>
                     <td><%=data.code%></td>
                     <td><%=data.discount%></td>
-                    <td><%=data.startingDate%></td>
-                    <td><%=data.expiryDate%></td>
+                    <% let date = data.startingDate%>
+                    <% const format = new Date(date); %>
+                    <% const todate = format.toLocaleDateString(); %>
+                    <td><%=todate%></td>
+                    <% let date1 = data.expiryDate %>
+                    <% const format1 = new Date(date1); %>
+                    <% const todate1 = format1.toLocaleDateString(); %>
+                    <td><%=todate1%></td>
         
                     
                     <td>

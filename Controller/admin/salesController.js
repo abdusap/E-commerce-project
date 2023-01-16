@@ -22,8 +22,8 @@ const postPDFData=async (req,res)=>{
      let salesDate= req.body
      let startDate= new Date (salesDate.from)
      let endDate= new Date (salesDate.to)
-     var dateFrom = moment(salesDate.from).format("DD/MM/YYYY");
-     var dateto = moment(salesDate.to).format("DD/MM/YYYY");
+     let dateFrom = moment(salesDate.from).format("DD/MM/YYYY");
+     let dateto = moment(salesDate.to).format("DD/MM/YYYY");
     //  console.log(dateFrom+"dd"+dateto)
     const orderData= await order.find(
         { $and: [ {   orderDate: {$gte: startDate, $lte: endDate}  }, { orderStatus:"delivered"} ] })

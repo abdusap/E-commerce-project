@@ -69,6 +69,8 @@ router.post('/sales',adminSession.isLogin,salesController.postPDFData)
 
 router.get('/pdf_download',adminSession.isLogin)
 
+router.get('/order/view',adminSession.isLogin,orderController.viewOrder)
+
 
 
 module.exports=router

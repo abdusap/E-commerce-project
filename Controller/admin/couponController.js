@@ -12,7 +12,6 @@ const couponManage=async (req,res)=>{
 
 const addCoupon=(req,res)=>{
     try{
-        console.log(req.body);
         const code=req.body.code.toUpperCase()
         const newCoupon = new coupon({
             name: req.body.name,

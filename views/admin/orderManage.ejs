@@ -89,7 +89,7 @@
                             Banner Management
                         </a>
                         <a class="nav-link" href="/admin/sales">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-regular fa-file"></i></div>
                             Sales Report
                         </a>
                         <!-- <a class="nav-link" href="tables.html">
@@ -135,6 +135,7 @@
                  
                   
                     <th>Order Status</th>
+                    <th>View Order</th>
                    
                 </tr>
             </thead>
@@ -147,6 +148,7 @@
                   
                     
                     <th>Order Status</th>
+                    <th>View Order</th>
                    
                 </tr>
             </tfoot>
@@ -154,11 +156,13 @@
                 
                 <% orderDetails.forEach((data)=>{ %>
               <tr>
-                
-                <td><%=data.orderdate%></td>
+                <% let date = data.orderdate %>
+                <% const format = new Date(date  ); %>
+                <% const todate = format.toLocaleDateString(); %>
+                <td><%=todate %></td>
                 
                 <td>  <%=data.name%>    </td>
-                <td>  <%=data.totalamount%>    </td>
+                <td>$<%=data.totalamount%>    </td>
                 <td>   <%=data.paymentmethod%> </td>
                                 
                 
@@ -191,7 +195,22 @@
             
 
                     </td>
-                    
+                    <td>  <a href="/admin/order/view?id=<%= data._id %>">
+                        <button type="button" class="btn btn-outline-none">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="fa fa-file"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2zm0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14z"
+                            />
+                          </svg>
+                          </button
+                      ></a></td>
 
                    
                

@@ -44,7 +44,7 @@ const totalRevenue=totalOrder.reduce((acc,curr)=>{
   return acc
 },0)
 const cancelOrder=await orders.find({orderStatus:"cancelled"}).count()
-console.log(cancelOrder);
+// console.log(cancelOrder);
       res.render("../views/admin/home.ejs",{users,productCount,cancelOrder,totalRevenue});
     } catch (error) {
       console.log(error);

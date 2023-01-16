@@ -17,7 +17,8 @@ const orderManage=async (req,res)=>{
                 totalamount:"$totalAmount",
                 paymentmethod:"$paymentMethod",
                 paymentstatus:"$paymentStatus",
-                orderstatus:"$orderStatus"
+                orderstatus:"$orderStatus",
+                orderId:"$_id"
             }}
         ])
       res.render('../views/admin/orderManage.ejs',{orderDetails})
@@ -37,11 +38,51 @@ res.redirect('/admin/order')
     }
 }
 
+const viewOrder=async (req,res)=>{
+    try{
+        let id=req.query.id
+        id=mongoose.Types.ObjectId(id)
+      const productData =await order.aggregate([
+        {$match:{ _id:id }},
+        {$unwind:"$orderItems"},
+        {$project:{
+          address:"$address",
+          totalAmount:"$totalAmount",
+          productId:"$orderItems.productId",
+          productQty:"$orderItems.quantity",
+        }},
+        {$lookup:{
+          from:"products",
+          localField:"productId",
+          foreignField:"_id",
+          as:"data"
+        }},
+        {$unwind:"$data"},
+        {$project:{
+          address:"$address",
+          totalAmount:"$totalAmount",
+          productQty:"$productQty",
+          image:"$data.image",
+          name:"$data.name",
+          brand:"$data.brand",
+          price:"$data.price"
+    
+        }},
+        {$addFields:{
+          total:{$multiply:["$productQty","$price"]}
+        }}
+    
+      ])
+       res.render('../views/admin/orderview.ejs',{productData})
+    }catch(error){
+        console.log(error);
+    }
+}
 
 
 
 module.exports = {
     orderManage,
-    orderUpdate
-    
+    orderUpdate,
+    viewOrder
       };

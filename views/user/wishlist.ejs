@@ -21,7 +21,9 @@
 
     <div class="page-content">
         <div class="container">
-            <table class="table table-wishlist table-mobile">
+            <% if(wishlistExist!=null){ %>
+                <% if(wishlistExist.wishList.length!=0){ %>
+            <table class="table table-wishlist table-mobile" id="table">
                 <thead>
                     <tr>
                         <th>Product</th>
@@ -54,11 +56,12 @@
                             <!-- <button class="btn-product btn-cart" > <span>add to cart</span></button> -->
                             <button  class="btn btn-block btn-outline-primary-2" onclick="addToCart('<%=data.id%>')"><i class="icon-cart-plus"></i>Add to Cart</button>
                         </td>
-                        <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+                        <td class="remove-col"><button class="btn-remove" onclick="deleteWish('<%=data.id%>')"><i class="icon-close"></i></button></td>
                     </tr>
                    <% }) %>
                 </tbody>
             </table><!-- End .table table-wishlist -->
+            
             <div class="wishlist-share">
                 <div class="social-icons social-icons-sm mb-2">
                     <label class="social-label">Share on:</label>
@@ -69,6 +72,14 @@
                     <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
                 </div><!-- End .soial-icons -->
             </div><!-- End .wishlist-share -->
+            <% }else{ %>
+                <h4 style="color: red;">Your Wishlist is Empty</h4>
+                <a href="/" class="btn btn-outline-primary-2 btn-order btn-block" style="width: 5%;">Go to Home</a>
+                <% } %>
+                <% }else{ %>
+                    <h4 style="color: red;">Your Wishlist is Empty</h4>
+                <a href="/" class="btn btn-outline-primary-2 btn-order btn-block" style="width: 5%;">Go to Home</a>
+                <% } %>
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->

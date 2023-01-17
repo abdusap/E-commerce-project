@@ -55,6 +55,8 @@ router.get("/wishlist", session.isLogin, shop.viewWishlist);
 
 router.post("/addtowishlist", session.isLogin, shop.addWishlist);
 
+router.delete("/wishlist",session.isLogin, shop.deleteWishlist)
+
 router.post("/setaddress", session.isLogin, shop.setAddressCheckout);
 
 router.post("/coupon_check", session.isLogin, shop.couponCheck);

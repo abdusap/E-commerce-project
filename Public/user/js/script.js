@@ -173,6 +173,22 @@ function addToWishlist(id){
 
 }
 
+function deleteWish(proId){
+    $.ajax({
+        url:'/wishlist',
+        method:'delete',
+        data : {
+            proId
+        },
+        success:(res)=>{
+            if(res.success){
+                $("#table").load(location.href + " #table")
+            }
+        }
+
+    })
+}
+
 function setaddress(id){
     $.ajax({
         url:'/setaddress',

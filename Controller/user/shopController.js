@@ -15,6 +15,7 @@ const userCart = async (req, res) => {
     const user = await customer.findOne({ _id: req.session.user });
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
+    const cartExist=await cart.findOne({userId:req.session.user})
     const cartItems = await cart.aggregate([
       { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
       { $unwind: "$cartItem" },
@@ -59,6 +60,7 @@ const userCart = async (req, res) => {
       cartItems,
       user,
       subtotal,
+      cartExist
     });
   } catch (error) {
     console.log(error);
@@ -544,6 +546,7 @@ const viewWishlist=async (req,res)=>{
     const user = await customer.findOne({ _id: req.session.user });
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
+    const wishlistExist=await wishlist.findOne({userId:req.session.user})
     const wishList = await wishlist.aggregate([
       { $match: { userId: user._id } },
       { $unwind: "$wishList" },
@@ -577,7 +580,7 @@ const viewWishlist=async (req,res)=>{
         },
       },
     ]);
-    res.render('../views/user/wishlist.ejs',{user,brands,categories,wishList})
+    res.render('../views/user/wishlist.ejs',{user,brands,categories,wishList,wishlistExist})
   }catch(error){
     console.log(error);
   }
@@ -610,7 +613,6 @@ const addWishlist = async(req,res)=>{
           )
           const wishlistData =await wishlist.findOne({userId:Id})
                const count=wishlistData.wishList.length
-               console.log(count);             
               res.json({success:true,count})
          } 
       }else{
@@ -625,6 +627,18 @@ const addWishlist = async(req,res)=>{
       }    
   } catch (error) {
       console.log(error.message);
+  }
+}
+
+const deleteWishlist=async (req,res)=>{
+  try{
+    await wishlist.updateOne(
+      { userId: req.session.user },
+      { $pull: { wishList: { productId: req.body.proId } } }
+    );
+    res.json({success:true})
+  }catch(error){
+    console.log(error);
   }
 }
 
@@ -707,6 +721,7 @@ module.exports = {
   postCheckOut,
   viewWishlist,
   addWishlist,
+  deleteWishlist,
   setAddressCheckout,
   couponCheck,
   verifyPayment,

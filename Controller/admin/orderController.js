@@ -40,7 +40,7 @@ res.redirect('/admin/order')
 
 const viewOrder=async (req,res)=>{
     try{
-        let id=req.query.id
+        let id=req.params.id
         id=mongoose.Types.ObjectId(id)
       const productData =await order.aggregate([
         {$match:{ _id:id }},

@@ -57,7 +57,7 @@ TechKart
 
 
    <h4>SALES REPORT</h4>
-   <h6 style="padding-bottom: 1%;">Date From:<%=dateFrom%>-Date To:<%=dateto%></h6>
+   <h6 style="padding-bottom: 1%;"></h6>
    <% if(orderData!=null) { %>
     <table class="table table-bordered" style="width:74%;">
       <thead>
@@ -101,6 +101,7 @@ TechKart
         <div class="card-body">
           <h4 class="card-title">$<%= total %></h4>
         </div>
+        <a href="/admin/csv_download?total=<%= total %>"><button class="btn btn-secondary" >Download</button></a>
       </div>
     </div>
    

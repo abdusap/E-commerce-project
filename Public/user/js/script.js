@@ -21,7 +21,7 @@ function add_to_cart(proId){
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'product add successfully',
+                        title: 'product added successfully',
                         showConfirmButton: false,
                         timer: 1500
                       })
@@ -175,7 +175,7 @@ function addToWishlist(id){
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'product add successfully',
+                        title: 'product added successfully',
                         showConfirmButton: false,
                         timer: 1500
                       })
@@ -256,7 +256,7 @@ function setaddress(id){
         // $('#coupon_code').html(code)
         let newRow = "<tr><td>" + "Coupon Applied:" + "</td><td>" + code + "</td></tr>";
         let newRow1 = "<tr><td>" + "Discount:" + "</td><td>" + "-$"+discountedPrice + "</td></tr>";
-        let specificRow = $("#checkout_table tr").eq(5);
+        let specificRow = $("#checkout_table tr").eq(4);
         specificRow.after(newRow1);
         specificRow.after(newRow);
         $('#couponId').val(couponId)

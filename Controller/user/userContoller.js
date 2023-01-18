@@ -155,8 +155,8 @@ const home = async (req, res) => {
     const categories = await category.find({ status: true });
     const user=await customer.findOne({_id: req.session.user})
     const bannerData=await banner.find({ status: true})
-    // console.log(bannerData);
-    res.render("../views/user/home.ejs", { brands, categories ,user,bannerData});
+    const cartCount=await cart.find({userId: req.session.user})
+    res.render("../views/user/home.ejs", { brands, categories ,user,bannerData,cartCount});
   } catch (error) {
     console.log(error);
   }

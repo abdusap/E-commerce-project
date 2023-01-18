@@ -35,6 +35,8 @@ router.post("/profileedit", session.isLogin, user.profileEdit);
 
 router.get("/product", product.productPage);
 
+router.post('/product',product.search)
+
 router.get("/product-details", product.productDetails);
 
 router.get("/cart", session.isLogin, shop.userCart);

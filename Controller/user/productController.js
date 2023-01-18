@@ -40,8 +40,32 @@ const productPage = async (req, res) => {
 }
   };
 
+  const search = async (req, res) => {
+    try {
+      const user = await customer.findOne({ _id: req.session.user })
+      const categories = await category.find({ status: true })
+      const brands = await product.distinct('brand')
+      const key = req.body.search
+      // console.log(key)
+      const productList = await product.find({
+        $or: [
+          { name: new RegExp(key, 'i') }
+          // { category: new RegExp(key, "i") },
+        ]
+      })
+      if (productList.length) {
+        res.render('user/product', { user, categories, brands, productList })
+      } else {
+        res.render('user/product', { user, categories, brands, productList, message: 'Ooops ...! No Match' })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   module.exports = {
     productPage,
-    productDetails
+    productDetails,
+    search
   };

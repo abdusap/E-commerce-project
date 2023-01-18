@@ -48,7 +48,7 @@ router.get('/coupon-block',adminSession.isLogin,couponController.block)
 // Order management
 router.get('/order',adminSession.isLogin,orderController.orderManage)
 router.post('/order',adminSession.isLogin,orderController.orderUpdate)
-router.get('/order/view',adminSession.isLogin,orderController.viewOrder)
+router.get('/order/view:id',adminSession.isLogin,orderController.viewOrder)
 
 // Banner management
 router.get('/banner',adminSession.isLogin,bannerController.bannerManage)
@@ -58,7 +58,7 @@ router.get('/banner_block',adminSession.isLogin,bannerController.bannerBlock)
 // Sales section
 router.get('/sales',adminSession.isLogin,salesController.salesPage)
 router.post('/sales',adminSession.isLogin,salesController.postPDFData)
-router.get('/pdf_download',adminSession.isLogin)
+router.get('/csv_download',adminSession.isLogin,salesController.csvDownload)
 
 
 

@@ -73,7 +73,7 @@ const viewOrder=async (req,res)=>{
         }}
     
       ])
-       res.render('../views/admin/orderview.ejs',{productData})
+       res.render('../views/admin/orderView.ejs',{productData})
     }catch(error){
         console.log(error);
     }

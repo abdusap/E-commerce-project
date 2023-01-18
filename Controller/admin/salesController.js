@@ -45,7 +45,7 @@ const postPDFData=async (req,res)=>{
     const filePath= path.resolve(__dirname,'../../views/admin/pdfDownload.ejs')
         const htmlString=fs.readFileSync(filePath).toString()
         const ejsData= ejs.render(htmlString,data)
-        pdf.create(ejsData,option).toFile('../../Public/admin/sales_report.pdf',(err,file)=>{
+        pdf.create(ejsData,option).toFile('/Public/admin/sales_report.pdf',(err,file)=>{
             if(err){
 
                 console.log(err);
@@ -53,7 +53,7 @@ const postPDFData=async (req,res)=>{
 
             console.log('pdf');
 
-          const filePath= path.resolve(__dirname,'../../Public/admin/sales_report.pdf')
+          const filePath= path.resolve(__dirname,'/Public/admin/sales_report.pdf')
                 fs.readFile(filePath,(err,file)=>{
 
                     if(err){

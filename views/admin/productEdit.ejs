@@ -42,7 +42,7 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <li><a class="dropdown-item" href="/admin/logout">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -119,11 +119,11 @@
                     
                                     <form  action="/admin/edit" method="post" enctype="multipart/form-data" >
                                         <label for="">name</label>
-                                        <input type="text" class="form-control" name="name" value="<%=productData[0].name%>">
+                                        <input type="text" class="form-control" name="name" value="<%=productData[0].name%>" required>
                     
                                         <!-- <div class="form-group col-md-4"> -->
                                             <label for="inputState">Category</label>
-                                            <select id="inputState" class="form-control" name="category">
+                                            <select id="inputState" class="form-control" name="category" required>
                                             <option selected><%=productData[0].catData[0].name%></option>
                                             <% categoryData.forEach((data)=>{ %> 
                                                 <% if (data.name!=productData[0].catData[0].name){ %>
@@ -134,22 +134,22 @@
                                         <!-- </div>   -->
 
                                         <label for="">Brand</label>
-                                        <input type="text" class="form-control" name="brand" value="<%=productData[0].brand%>">
+                                        <input type="text" class="form-control" name="brand" value="<%=productData[0].brand%>" required>
                     
                                         <label for="">Description</label>
-                                        <input type="text" class="form-control" name="description" value="<%=productData[0].description%>">
+                                        <input type="text" class="form-control" name="description" value="<%=productData[0].description%>" required>
 
                                         <label for="">RAM</label>
-                                        <input type="text" class="form-control" name="ram" value="<%=productData[0].ram%>">
+                                        <input type="text" class="form-control" name="ram" value="<%=productData[0].ram%>" required>
 
                                         <label for="">Stock</label>
-                                        <input type="text" class="form-control" name="stock" value="<%=productData[0].stock%>">
+                                        <input type="text" class="form-control" name="stock" value="<%=productData[0].stock%>" required>
                     
                                         <label for="">price</label>
-                                        <input type="text" class="form-control" name="price" value="<%=productData[0].price%>">
+                                        <input type="text" class="form-control" name="price" value="<%=productData[0].price%>" required>
                     
                                         <label for="">image</label>
-                                        <img src="/Public/admin/product/<%=productData[0].image[0].filename%>" alt="" style="width: 5rem">
+                                        <img src="/Public/admin/product/<%=productData[0].image[0]%>" alt="" style="width: 5rem">
                                         <input type="file" class="form-control" name="image" value="/Public/admin/product/<%=productData[0].image%>" multiple>
                     
                                         <input type="submit" value="submit" class="form-control btn btn-success">

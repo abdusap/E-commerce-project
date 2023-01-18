@@ -1,5 +1,6 @@
 const category = require("../../Model/categoryModel");
 const mongoose = require("mongoose");
+const sharp= require("sharp")
 
 
 
@@ -16,8 +17,16 @@ const categoryManage = async (req, res) => {
   const addCategory = (req, res) => {
     try {
       const categoryName = req.body.name.toUpperCase();
+        let name = Date.now() + ".webp";
+        sharp(req.file.buffer)
+          .resize(207, 309)
+          .toFormat("webp")
+          .webp({ quality: 100 })
+          .toFile("Public/user/images/categories/" + name);
+
       const newCategory = new category({
         name: categoryName,
+        image:name
       });
       newCategory.save();
       res.redirect("/admin/category");
@@ -63,11 +72,25 @@ const categoryManage = async (req, res) => {
     var postCategoryEdit = async (req, res) => {
       try {
         let categoryName = req.body.name.toUpperCase();
+        if(req.file==undefined){
         await category.findByIdAndUpdate(
           { _id: categoryID },
           { $set: { name: categoryName } }
         );
         res.redirect("/admin/category");
+        }else{
+          let name = Date.now() + ".webp";
+          sharp(req.file.buffer)
+            .resize(207, 309)
+            .toFormat("webp")
+            .webp({ quality: 100 })
+            .toFile("Public/user/images/categories/" + name);
+            await category.findByIdAndUpdate(
+              { _id: categoryID },
+              { $set: { name: categoryName,image:name } }
+            );
+            res.redirect("/admin/category");
+        }
       } catch (error) {
         console.log(error);
       }

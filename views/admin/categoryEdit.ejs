@@ -42,7 +42,7 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <li><a class="dropdown-item" href="/admin/logout">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -128,11 +128,13 @@
 
                 <div class="signin-form">
                     <h2 class="form-title">Edit</h2>
-                    <form method="post" class="register-form" id="login-form" action="/admin/category-edit">
+                    <form method="post" class="register-form" id="login-form" action="/admin/category-edit" enctype="multipart/form-data">
                      
                         <div class="form-group">
                             <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="name" id="your_name" placeholder="Category Name" value="<%=categoryData.name%>"/>
+                            <input class="form-control" type="text" name="name" id="your_name" placeholder="Category Name" value="<%=categoryData.name%>" required/>
+                            <label for="exampleFormControlInput1">Image</label>
+                       <input type="file" class="form-control" id="image" placeholder="Name" name="image"  >
                         </div>
                         
                         

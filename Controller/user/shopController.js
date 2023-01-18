@@ -126,9 +126,9 @@ const cartDelete = async (req, res) => {
   try {
     await cart.updateOne(
       { userId: req.session.user },
-      { $pull: { cartItem: { productId: req.query.id } } }
+      { $pull: { cartItem: { productId: req.body.proId } } }
     );
-    res.redirect("/cart");
+    res.json({success:true})
   } catch (error) {
     console.log(error);
   }
@@ -181,9 +181,11 @@ const productQtySub = async (req, res) => {
 
 const checkOut = async (req, res) => {
   try {
-  //  let subtotal = req.query.subtotal;
+    let cartCheck= await cart.findOne({userId:req.session.user})
+    if(cartCheck!=null){
+      if(cartCheck.cartItem.length!=0){
     let cartItems = await cart.aggregate([
-      { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
+      { $match: { userId: mongoose.Types.ObjectId(req.session.user)} },
       { $unwind: "$cartItem" },
       {
         $project: {
@@ -247,6 +249,13 @@ const checkOut = async (req, res) => {
       cartItems,
       subtotal,
     });
+  }else{
+      res.redirect('/')
+  }
+}else{
+  res.redirect('/')
+}
+
   } catch (error) {
     console.log(error);
   }
@@ -327,6 +336,7 @@ const postCheckOut = async (req, res) => {
         await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
     }
     await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
+    req.session.success=true
         res.json({CODSuccess:true})
       }else{
         await coupon.updateOne({_id:req.body.couponid}, { $push: { users: { userId:req.session.user} } })
@@ -355,6 +365,7 @@ const postCheckOut = async (req, res) => {
         await product.updateOne({_id:productDetails[i].productId},{$inc:{stock:-(productDetails[i].quantity)}})
     }
     await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
+        req.session.success=true
         res.json({CODSuccess:true})
       }
       }
@@ -440,7 +451,7 @@ const postCheckOut = async (req, res) => {
           }
         });
       }else{
-        const orderDetails = new order({
+        const orderDetails =({
           userId: req.session.user,
           name: req.body.name,
           number: req.body.mobile,
@@ -457,9 +468,11 @@ const postCheckOut = async (req, res) => {
           subTotal: subtotal,
           totalAmount: req.body.total,
           paymentMethod: "Online Payment",
-        });   
+        });  
+         let totalAmount=req.body.total
+         totalAmount=parseFloat(totalAmount)
         var options = {
-          amount: req.body.total*100,  // amount in the smallest currency unit
+          amount: totalAmount*100,  // amount in the smallest currency unit
           currency: "INR",
           receipt: "order_rcptid_11"
         };
@@ -498,6 +511,7 @@ try{
    await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
     orderDetails=new order(orderDetails)
       await orderDetails.save()
+      req.session.success=true
     res.json({success:true})
     }else{
      let productDetails=orderDetails.orderItems
@@ -507,6 +521,7 @@ try{
   await cart.findOneAndDelete({userId:mongoose.Types.ObjectId(req.session.user)})
       orderDetails=new order(orderDetails)
       await orderDetails.save()
+      req.session.success=true
       res.json({success:true})
     }
   } else {
@@ -520,10 +535,15 @@ try{
 
 const paymentSuccess=async (req,res)=>{
 try{
+  if(req.session.success){
     const user = await customer.findOne({ _id: req.session.user });
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
+    req.session.success=false
     res.render('../views/user/paymentSuccess.ejs',{user,brands,categories})
+  }else{
+    res.redirect('/')
+  }
 }catch(error){
   console.log(error);
 }

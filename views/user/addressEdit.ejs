@@ -28,9 +28,7 @@
                             <li class="nav-item">
                                 <a class="nav-link  active" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link " id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
-                            </li> -->
+                            
 
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
@@ -74,7 +72,6 @@
 
                                     <label>Address Line 1 </label>
                                     <input  type="text" class="form-control"  value="<%=EditData[0].address[0].addressline1%>" name="addressline1" required>
-                                    <!-- <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small> -->
 
                                     <label>Address Line 2 </label>
                                     <input  type="text" class="form-control"  value="<%=EditData[0].address[0].addressline2%>" name="addressline2" required>
@@ -103,30 +100,15 @@
                                     <label>Name </label>
                                     <input readonly type="text" class="form-control"  value="User">
                                     <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small>
-                                    <!-- <div class="row">
-                                        <div class="col-sm-6">
-                                            <label>Name *</label>
-                                            <input type="text" class="form-control" required>
-                                        </div><-- End .col-sm-6 -->
-
-                                        <!-- <div class="col-sm-6">
-                                            <label>Email *</label>
-                                            <input type="text" class="form-control" required> -->
-                                        <!-- </div> --> 
-                                        <!-- End .col-sm-6 -->
-                                    <!-- </div> -->
-                                    <!-- End .row -->
+                                   
 
                                     <label>Email </label>
                                     <input readonly type="email" class="form-control"  value="abd@gmail.com">
-                                    <!-- <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small> -->
 
                                     <label>Mobile </label>
                                     <input readonly type="text" class="form-control"  value="7736600289">
 
-                                    <!-- <label>Current password (leave blank to leave unchanged)</label>
-                                    <input type="password" class="form-control"> -->
-
+                                    
                                     <label>New password (leave blank to leave unchanged)</label>
                                     <input type="password" class="form-control" id="password"  required>
 
@@ -163,19 +145,5 @@
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
-<!-- <script>
-    var password = document.getElementById("password")
-  , confirm_password = document.getElementById("confirm_password");
 
-function validatePassword(){
-  if(password.value != confirm_password.value) {
-    confirm_password.setCustomValidity("Passwords Don't Match");
-  } else {
-    confirm_password.setCustomValidity('');
-  }
-}
-
-password.onchange = validatePassword;
-confirm_password.onkeyup = validatePassword;
-</script> -->
 <%-include('../partials/user-footer.ejs') %>

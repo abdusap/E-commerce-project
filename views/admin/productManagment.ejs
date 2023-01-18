@@ -42,7 +42,7 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <li><a class="dropdown-item" href="/admin/logout">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -131,12 +131,12 @@
                 <div class="form-group">
                   
                   <label for="exampleFormControlInput1">Name</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name" required>
                   
                
                   <div class="form-group col-md-4">
                     <label for="inputState">Category</label>
-                    <select id="inputState" class="form-control" name="category">
+                    <select id="inputState" class="form-control" name="category" required>
                     <option selected>Choose...</option>
                     <% categories.forEach((data)=>{ %>
                     <option><%=data.name%></option>
@@ -147,17 +147,17 @@
                   <!-- <label for="exampleFormControlInput1">Category</label>
                   <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Category" name="category">  -->
                   <label for="exampleFormControlInput1">Brand</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Brand" name="brand">
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Brand" name="brand" required>
                   <label for="exampleFormControlInput1">Description</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Description" name="description">
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Description" name="description" required>
                   <label for="exampleFormControlInput1">RAM</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="RAM" name="ram">
+                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="RAM" name="ram" required>
                   <label for="exampleFormControlInput1">Stock</label>
-                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Stock" name="stock">
+                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Stock" name="stock" required>
                   <label for="exampleFormControlInput1">Price</label>
-                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Price" name="price">
+                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Price" name="price" required>
                   <label for="exampleFormControlFile1">Upload photos </label>
-                  <input type="file" class="form-control-file" id="image" name="image" multiple>
+                  <input type="file" class="form-control-file" id="image" name="image" multiple required>
                 </div>
               
         </div>
@@ -211,7 +211,7 @@
                 <% products.forEach((data)=>{ %>
               <tr>
                 
-                <td><img src="/Public/admin/product/<%=data.image[0].filename%>" style="width:50px;height:50px;"> </td>
+                <td><img src="/Public/admin/product/<%=data.image[0]%>" style="width:50px;height:50px;"> </td>
                 <td><%=data.name%></td>
                 <td>
                     <%=data.catData[0].name %>

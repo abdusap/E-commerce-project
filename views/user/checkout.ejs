@@ -27,7 +27,7 @@
                       <option  value="<%=address.id%>"><%=address.name%>,<%=address.addressline1%>,<%=address.addressline2%>,<%=address.district%>,<%=address.state%>,<%=address.country%>,PIN:<%=address.pin%>,Mob:<%=address.mobile%></option>
                    <% }) %>
                     </select>
-            
+           
                     <div class="row">
                         <div class="col-lg-9">
                             <h2 class="checkout-title">Or Delivery Here</h2><!-- End .checkout-title -->
@@ -90,7 +90,7 @@
                             <div class="summary">
                                 <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
 
-                                <table class="table table-summary">
+                                <table class="table table-summary" id="checkout_table">
                                     <thead>
                                         <tr>
                                             <th>Product</th>
@@ -105,10 +105,8 @@
                                             <td>$<%=item.total%></td>
                                         </tr>
                                          <% }) %>
-                                        <!-- <tr>
-                                            <td><a href="#">Blue utility pinafore denimdress</a></td>
-                                            <td>$76,00</td>
-                                        </tr> -->
+                                        
+                                       
                                         <tr class="summary-subtotal">
                                             <td>Subtotal:</td>
                                             <td>$<span id="subtotal"><%=subtotal%></span> </td>
@@ -117,10 +115,7 @@
                                             <td>Shipping:</td>
                                             <td>Free shipping</td>
                                         </tr>
-                                        <tr>
-                                            <td>Coupon Applied:</td>
-                                            <td><span id="coupon_code"></span></td>
-                                        </tr>
+                                        
                                         <tr class="summary-total">
                                             <td>Total:</td>
                                             <td>$<span id="total"><%=subtotal%></span></td>
@@ -151,5 +146,12 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
 
+<script>
+    $("select#cars option").each(function(){
+var text = $(this).text();
+var truncated = text.substring(0, 30) + "..."; // truncate text to 30 characters
+$(this).text(truncated);
+});
+</script>
 
 <%-include('../partials/user-footer.ejs') %>

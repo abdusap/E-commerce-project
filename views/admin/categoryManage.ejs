@@ -42,7 +42,7 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <li><a class="dropdown-item" href="/admin/logout">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -125,12 +125,14 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="/admin/addcategory" method="post">
+            <form action="/admin/addcategory" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                   <!-- <label for="exampleFormControlFile1">Example file input</label>
                   <input type="file" class="form-control-file" id="exampleFormControlFile1"> -->
                   <label for="exampleFormControlInput1">Category Name</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name" required>
+        <label for="exampleFormControlInput1">Image</label>
+        <input type="file" class="form-control" id="image" placeholder="Name" name="image"  required>
                 </div>
               
         </div>
@@ -159,6 +161,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
+                    <th>Image</th>
                     <th>Name</th>                  
                     <th>Status</th>
                     <th>Action</th>
@@ -167,6 +170,7 @@
             <tfoot>
                 <tr>
                     <th>No.</th>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -177,6 +181,7 @@
               <tr>
                 
                 <th scope="row"><%= index+1 %></th>
+                <td> <img src="/Public/user/images/categories/<%=userdata.image%>" alt="" style="width:50px;height:50px;"> </td>
                 <td><%=userdata.name%></td>
                 
                 <td>

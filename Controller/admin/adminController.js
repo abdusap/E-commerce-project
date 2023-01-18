@@ -60,8 +60,19 @@ const home = async (req, res) => {
   }
 };
 
+const logout= async (req, res) => {
+  try{
+     req.session.destroy()
+     console.log('session destroyed')
+     res.redirect('/admin/login')
+  }catch(error){
+    console.log(error);
+  }
+}
+
 module.exports = {
   home,
   adminLogin,
   adminVerification,
+  logout
 };

@@ -5,11 +5,10 @@ const bannerSchema= new mongoose.Schema(
         name:{
             type:String
         },
-        image:[
-            {
-            filename:String
-            }
-        ],
+        image:{
+            type:Array
+           }
+        ,
         date:{
             type:Date,
             default:Date.now()

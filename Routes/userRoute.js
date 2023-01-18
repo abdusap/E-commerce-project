@@ -27,7 +27,7 @@ router.get("/profile/address-edit", session.isLogin, user.addressEdit);
 
 router.post("/addressedit", user.postAddressEdit);
 
-router.get("/address-delete?id", session.isLogin, user.addressDelete);
+router.get("/address-delete", session.isLogin, user.addressDelete);
 
 router.get("/address-default", session.isLogin, user.addressDefualt);
 
@@ -45,7 +45,7 @@ router.patch("/productadd", session.isLogin, shop.productQtyAdd);
 
 router.patch("/productsub", session.isLogin, shop.productQtySub);
 
-router.get("/cart-item-delete", session.isLogin, shop.cartDelete);
+router.delete("/cart", session.isLogin, shop.cartDelete);
 
 router.get("/checkout", session.isLogin, shop.checkOut);
 
@@ -74,5 +74,7 @@ router.get("/payment_succuss", session.isLogin, shop.paymentSuccess);
 router.get("/payment_fail", session.isLogin, shop.paymentFail);
 
 router.get("/404", user.errorPage);
+
+router.get("/logout", session.isLogin, user.logout);
 
 module.exports = router;

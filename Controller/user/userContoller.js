@@ -389,6 +389,16 @@ const errorPage=(req,res)=>{
   }
 }
 
+const logout= async (req, res) => {
+  try{
+     req.session.destroy()
+     console.log('session destroyed')
+     res.redirect('/login')
+  }catch(error){
+    console.log(error);
+  }
+}
+
 
   module.exports = {
     login,
@@ -408,5 +418,6 @@ const errorPage=(req,res)=>{
     orderPage,
     viewOrderDetails,
     cancelOrder,
-    errorPage
+    errorPage,
+    logout
   }

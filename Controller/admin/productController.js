@@ -25,35 +25,29 @@ const productManage = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    // console.log(req.files[0]);
-    // console.log(req.files.length);
     let images = [];
     for (let i = 0; i < req.files.length; i++) {
-      // console.log('a')
-      let name = Date.now() + "-"+i + ".png";
-      // console.log(req.files[i]);
+      let name = Date.now() + "-" + i + ".webp";
       sharp(req.files[i].buffer)
         .resize(1200, 1200)
-        .toFormat("png")
-        .png({ quality: 100 })
+        .toFormat("webp")
+        .webp({ quality: 100 })
         .toFile("Public/admin/product/" + name);
       images.push(name);
-      // console.log("---"+name);
     }
-    console.log(images);
     let productName = req.body.name.toUpperCase();
     let data = await category.findOne({ name: req.body.category });
-    // let newProduct = new product({
-    //   name: productName,
-    //   category: data._id,
-    //   brand: req.body.brand,
-    //   description: req.body.description,
-    //   ram: req.body.ram,
-    //   stock: req.body.stock,
-    //   price: req.body.price,
-    //   image: req.files,
-    // });
-    // newProduct.save();
+    let newProduct = new product({
+      name: productName,
+      category: data._id,
+      brand: req.body.brand,
+      description: req.body.description,
+      ram: req.body.ram,
+      stock: req.body.stock,
+      price: req.body.price,
+      image: images,
+    });
+    newProduct.save();
     res.redirect("/admin/product");
   } catch (error) {
     console.log(error.message);
@@ -76,7 +70,8 @@ const productBlock = async (req, res) => {
   }
 };
 
-try {
+
+{
   let productID;
   var productEdit = async (req, res) => {
     try {
@@ -108,9 +103,10 @@ try {
 
   var postProductEdit = async (req, res) => {
     try {
-      if (typeof req.file === "undefined") {
-        let data = await category.findOne({ name: req.body.category });
-        let productName = req.body.name.toUpperCase();
+      let data = await category.findOne({ name: req.body.category });
+      let productName = req.body.name.toUpperCase();
+      if (req.files.length==0) { 
+       
         await product.findByIdAndUpdate(
           { _id: productID },
           {
@@ -126,11 +122,18 @@ try {
           }
         );
         res.redirect("/admin/product");
-      } else {
-        let data = await category.findOne({ name: req.body.category });
-        let productName = req.body.name.toUpperCase();
-        console.log(req.file.filename);
-        await product.findByIdAndUpdate(
+      }else{
+        let images = [];
+        for (let i = 0; i < req.files.length; i++) {
+          let name = Date.now() + "-" + i + ".webp";
+          sharp(req.files[i].buffer)
+            .resize(1200, 1200)
+            .toFormat("webp")
+            .webp({ quality: 100 })
+            .toFile("Public/admin/product/" + name);
+          images.push(name);
+        }
+           await product.findByIdAndUpdate(
           { _id: productID },
           {
             $set: {
@@ -141,7 +144,7 @@ try {
               ram: req.body.ram,
               stock: req.body.stock,
               price: req.body.price,
-              image: req.files,
+              image: images,
             },
           }
         );
@@ -151,9 +154,8 @@ try {
       console.log(error);
     }
   };
-} catch (error) {
-  console.log(error);
-}
+} 
+
 
 const productDelete = async (req, res) => {
   try {

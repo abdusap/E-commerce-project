@@ -28,9 +28,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Addresses</a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link " id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
-                            </li> -->
+                          
 
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-orders-link"  href="/order" >Orders</a>
@@ -135,12 +133,6 @@
                                     <div class="col-lg-6">
                                         <div class="card card-dashboard">
                                             <div class="card-body">
-                                                <!-- <h3 class="card-title">Add Address</h3> -->
-                                                <!-- End .card-title -->
-                                                 <!-- <p>You have not set up this type of address yet.<br>
-                                                <a href="#">Edit <i class="icon-edit"></i></a></p> -->
-
-
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >
@@ -180,15 +172,6 @@
                 <input  type="text" class="form-control"  value="" name="pin" required>
                 <label>Modile No. </label>
                 <input  type="text" class="form-control"  value="" name="mobile" required>
-
-                
-
-                <!-- <button type="submit" class="btn btn-outline-primary-2">
-                    <span>SAVE CHANGES</span>
-                    <i class="icon-long-arrow-right"></i>
-                </button> -->
-            
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -215,41 +198,13 @@
                                     <label>Name </label>
                                     <input  type="text" class="form-control"  value="<%=userDetails.name%>" name="name">
                                     <small class="form-text">This will be how your name will be displayed in the account section </small>
-                                    <!-- <div class="row">
-                                        <div class="col-sm-6">
-                                            <label>Name *</label>
-                                            <input type="text" class="form-control" required>
-                                        </div><-- End .col-sm-6 -->
-
-                                        <!-- <div class="col-sm-6">
-                                            <label>Email *</label>
-                                            <input type="text" class="form-control" required> -->
-                                        <!-- </div> --> 
-                                        <!-- End .col-sm-6 -->
-                                    <!-- </div> -->
-                                    <!-- End .row -->
-
-                                    <label>Email </label>
+                                  <label>Email </label>
                                     <input readonly type="email" class="form-control"  value="<%=userDetails.email%>">
-                                    <!-- <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small> -->
 
                                     <label>Mobile </label>
                                     <input readonly type="text" class="form-control"  value="<%=userDetails.mobile%>">
-                                       
-                                    <!-- <label>Current password (leave blank to leave unchanged)</label>
-                                    <input type="password" class="form-control" name="current_password"> -->
-
-                                    <!-- <label>New password (leave blank to leave unchanged)</label>
-                                    <input type="password" class="form-control" id="password"  name="new_password">
-
-                                    <label>Confirm new password</label>
-                                    <input type="password" class="form-control mb-2" id="confirm_password" >
-
-                                    <button type="submit" class="btn btn-outline-primary-2">
-                                        <span>SAVE CHANGES</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </button> -->
                                 </form>
+                                <% if(address.length!=0){ %>
                                 <div class="col-lg-6 pt-3">
                                     <div class="card card-dashboard" style="background-color: wheat;">
                                         <div class="card-body">
@@ -268,6 +223,7 @@
                                         </div><!-- End .card-body -->
                                     </div><!-- End .card-dashboard -->
                                 </div><!-- End .col-lg-6 -->
+                               <% } %>
                             </div><!-- .End .tab-pane -->
                         </div>
                     </div><!-- End .col-lg-9 -->

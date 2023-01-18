@@ -16,6 +16,9 @@ const uploadbuffer =require("../Middleware/multerBuffer")
 router.get('/login',adminSession.isLogout,adminController.adminLogin)
 router.post('/login',adminSession.isLogout,adminController.adminVerification)
 
+// Logout section
+router.get('/logout',adminSession.isLogin,adminController.logout)
+
 router.get('/home',adminSession.isLogin,adminController.home)
 // User management
 router.get('/user',adminSession.isLogin,customerController.userManage)
@@ -24,9 +27,9 @@ router.get('/userblock',adminSession.isLogin,customerController.userBlock)
 // Category management
 router.get('/category',adminSession.isLogin,categoryController.categoryManage)
 router.get('/category-block',adminSession.isLogin,categoryController.categoryBlock)
-router.post('/addcategory',adminSession.isLogin,categoryController.addCategory)
+router.post('/addcategory',adminSession.isLogin,upload.single('image'),categoryController.addCategory)
 router.get('/category/edit',adminSession.isLogin,categoryController.catergoryEdit)
-router.post('/category-edit',adminSession.isLogin,categoryController.postCategoryEdit)
+router.post('/category-edit',adminSession.isLogin,upload.single('image'),categoryController.postCategoryEdit)
 router.get('/category-delete',adminSession.isLogin,categoryController.categoryDelete)
 
 // Product management
@@ -56,6 +59,9 @@ router.get('/banner_block',adminSession.isLogin,bannerController.bannerBlock)
 router.get('/sales',adminSession.isLogin,salesController.salesPage)
 router.post('/sales',adminSession.isLogin,salesController.postPDFData)
 router.get('/pdf_download',adminSession.isLogin)
+
+
+
 
 
 

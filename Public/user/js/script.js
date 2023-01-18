@@ -136,6 +136,22 @@ function subQty(proId,position){
 
 }
 
+function deletecart(proId){
+    $.ajax({
+        url:'/cart',
+        method:'delete',
+        data : {
+            proId
+        },
+        success:(res)=>{
+            if(res.success){
+                $("#table").load(location.href + " #table")
+            }
+        }
+
+    })
+}
+
 
 function addToWishlist(id){
     $.ajax({
@@ -237,7 +253,12 @@ function setaddress(id){
         let discountedPrice=(discount*subtotal)/100
         subtotal=subtotal-discountedPrice
         $('#total').html(subtotal)
-        $('#coupon_code').html(code)
+        // $('#coupon_code').html(code)
+        let newRow = "<tr><td>" + "Coupon Applied:" + "</td><td>" + code + "</td></tr>";
+        let newRow1 = "<tr><td>" + "Discount:" + "</td><td>" + "-$"+discountedPrice + "</td></tr>";
+        let specificRow = $("#checkout_table tr").eq(5);
+        specificRow.after(newRow1);
+        specificRow.after(newRow);
         $('#couponId').val(couponId)
         $('#total_amount').val(subtotal)
         }

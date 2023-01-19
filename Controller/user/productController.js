@@ -21,6 +21,7 @@ const productPage = async (req, res) => {
     }
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
   };
 
@@ -44,6 +45,7 @@ const productPage = async (req, res) => {
     });
 }catch(error){
     console.log(error);
+    res.redirect('/500')
 }
   };
 
@@ -68,6 +70,7 @@ const productPage = async (req, res) => {
       }
     } catch (error) {
       console.log(error)
+      res.redirect('/500')
     }
   }
 

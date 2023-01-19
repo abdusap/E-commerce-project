@@ -7,6 +7,7 @@ const bannerManage=async (req,res)=>{
       res.render('../views/admin/bannerManage.ejs',{bannerDetails})
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 
@@ -29,6 +30,7 @@ const addBanner=(req,res)=>{
       res.redirect('/admin/banner')
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 
@@ -45,6 +47,7 @@ const bannerBlock=async (req,res)=>{
         }
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 

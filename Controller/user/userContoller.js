@@ -17,6 +17,7 @@ const login = (req, res) => {
     res.render("../views/user/login.ejs", req.query);
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -29,6 +30,7 @@ const signup = (req, res) => {
     res.render("../views/user/sign_up.ejs", req.query);
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -58,6 +60,7 @@ const userVerfication = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -109,6 +112,7 @@ const userVerfication = async (req, res) => {
       }
     } catch (error) {
       console.log("Signup error: " + error);
+      res.redirect('/500')
     }
   };
 
@@ -129,6 +133,7 @@ if (req.session.tempOTP) {
 }
 }catch(error){
   console.log(error);
+  res.redirect('/500')
 }
 };
   
@@ -145,6 +150,7 @@ const otp = (req, res) => {
   }
 }catch(error){
     console.log(error);
+    res.redirect('/500')
 }
 };
 
@@ -161,6 +167,7 @@ const home = async (req, res) => {
     res.render("../views/user/home.ejs", { brands, categories ,user,bannerData,cartCount,wishCount});
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -198,6 +205,7 @@ const profile = async (req, res) => {
     res.render("../views/user/userProfile.ejs", { brands, categories, address  ,user,userDetails,wrong,success,wishCount,cartCount});
 }catch(error){
     console.log(error);
+    res.redirect('/500')
 }
   };
 
@@ -226,6 +234,7 @@ let id
       });
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 
@@ -255,6 +264,7 @@ let id
       res.redirect("/profile");
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 
@@ -281,10 +291,12 @@ let id
       res.redirect("/profile");
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 
   const addressDefualt=async (req,res)=>{
+    try{
     const id =req.query.id
     await customer.updateMany(
       {_id:   mongoose.Types.ObjectId(req.session.user)},
@@ -296,6 +308,10 @@ let id
       { $set: { "address.$.status": true } }
      )
      res.redirect('/profile')
+    }catch(error){
+      console.log(error);
+      res.redirect('/500')
+    }
    }
    
    const profileEdit=async (req,res)=>{
@@ -319,6 +335,7 @@ let id
   // }
 }catch(error){
   console.log(error);
+  res.redirect('/500')
 }
 }
 
@@ -333,6 +350,7 @@ const orderPage=async (req,res)=>{
    res.render('../views/user/orderPage.ejs',{order,brands,categories,user,cartCount,wishCount})
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
@@ -379,6 +397,7 @@ const viewOrderDetails=async (req,res)=>{
    res.render('../views/user/orderHistory.ejs',{productData,brands,categories,user,cartCount,wishCount})
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
@@ -389,12 +408,22 @@ const cancelOrder=async (req,res)=>{
      res.redirect('/order')
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
 const errorPage=(req,res)=>{
   try{
    res.render('../views/user/errorPage.ejs')
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+const error500Page=(req,res)=>{
+  try{
+   res.render('../views/user/500page.ejs')
   }catch(error){
     console.log(error);
   }
@@ -407,6 +436,7 @@ const logout= async (req, res) => {
      res.redirect('/login')
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
@@ -430,5 +460,6 @@ const logout= async (req, res) => {
     viewOrderDetails,
     cancelOrder,
     errorPage,
+    error500Page,
     logout
   }

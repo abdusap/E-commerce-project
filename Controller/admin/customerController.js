@@ -11,6 +11,7 @@ const userManage = async (req, res) => {
       res.render("../views/admin/userManagment.ejs", { details: users });
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 
@@ -33,6 +34,7 @@ const userManage = async (req, res) => {
       }
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 

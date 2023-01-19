@@ -12,6 +12,7 @@ const adminLogin = (req, res) => {
     res.render("../views/admin/login.ejs", req.query);
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -57,6 +58,7 @@ const home = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -67,6 +69,7 @@ const logout= async (req, res) => {
      res.redirect('/admin/login')
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 

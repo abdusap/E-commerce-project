@@ -11,6 +11,7 @@ const categoryManage = async (req, res) => {
       res.render("../views/admin/categoryManage.ejs", { details: categories });
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 
@@ -32,6 +33,7 @@ const categoryManage = async (req, res) => {
       res.redirect("/admin/category");
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
  
@@ -54,6 +56,7 @@ const categoryManage = async (req, res) => {
       }
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
   
@@ -93,10 +96,12 @@ const categoryManage = async (req, res) => {
         }
       } catch (error) {
         console.log(error);
+        res.redirect('/500')
       }
     };
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 
   const categoryDelete = async (req, res) => {
@@ -106,6 +111,7 @@ const categoryManage = async (req, res) => {
       res.redirect("/admin/category");
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 

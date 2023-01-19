@@ -24,6 +24,7 @@ const orderManage=async (req,res)=>{
       res.render('../views/admin/orderManage.ejs',{orderDetails})
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 
@@ -35,6 +36,7 @@ await order.updateOne({ _id : id },{ $set: { orderStatus: status }})
 res.redirect('/admin/order')
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 
@@ -76,6 +78,7 @@ const viewOrder=async (req,res)=>{
        res.render('../views/admin/orderView.ejs',{productData})
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 

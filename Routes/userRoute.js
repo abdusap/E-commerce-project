@@ -58,6 +58,7 @@ router.get("/payment_fail", session.isLogin, shop.paymentFail);
 
 // Error page
 router.get("/404", user.errorPage);
+router.get("/500", user.error500Page);
 
 // Logout section
 router.get("/logout", session.isLogin, user.logout);

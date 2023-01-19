@@ -51,6 +51,7 @@ const addProduct = async (req, res) => {
     res.redirect("/admin/product");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/500')
   }
 };
 
@@ -67,6 +68,7 @@ const productBlock = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -98,6 +100,7 @@ const productBlock = async (req, res) => {
       });
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 
@@ -152,6 +155,7 @@ const productBlock = async (req, res) => {
       }
     } catch (error) {
       console.log(error);
+      res.redirect('/500')
     }
   };
 } 
@@ -164,6 +168,7 @@ const productDelete = async (req, res) => {
     res.redirect("/admin/product");
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 

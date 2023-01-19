@@ -68,6 +68,7 @@ const userCart = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -123,6 +124,7 @@ const addToCart=async (req,res)=>{
       }
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
@@ -155,6 +157,7 @@ const productQtyAdd = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -179,6 +182,7 @@ const productQtySub = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -266,6 +270,7 @@ const checkOut = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -497,6 +502,7 @@ const postCheckOut = async (req, res) => {
       }
   } catch (error) {
     console.log(error);
+    res.redirect('/500')
   }
 };
 
@@ -538,6 +544,7 @@ try{
   }
 }catch(error){
   console.log(error)
+  res.redirect('/500')
 }
 }
 
@@ -556,6 +563,7 @@ try{
   }
 }catch(error){
   console.log(error);
+  res.redirect('/500')
 }
 }
 
@@ -569,6 +577,7 @@ const paymentFail=async (req,res)=>{
       res.render('../views/user/paymentFail.ejs',{user,brands,categories,cartCount,wishCount})
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
   }
 
@@ -617,6 +626,7 @@ const viewWishlist=async (req,res)=>{
     res.render('../views/user/wishlist.ejs',{user,brands,categories,wishList,wishlistExist,cartCount,wishCount})
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
@@ -661,6 +671,7 @@ const addWishlist = async(req,res)=>{
       }    
   } catch (error) {
       console.log(error.message);
+      res.redirect('/500')
   }
 }
 
@@ -673,6 +684,7 @@ const deleteWishlist=async (req,res)=>{
     res.json({success:true})
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
@@ -701,6 +713,7 @@ const setAddressCheckout=async (req,res)=>{
   res.json({data:address})
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 
@@ -739,6 +752,7 @@ const couponCheck=async (req,res)=>{
     })
   }catch(error){
     console.log(error);
+    res.redirect('/500')
   }
 }
 

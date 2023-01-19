@@ -7,6 +7,7 @@ const couponManage=async (req,res)=>{
       res.render('../views/admin/couponManage.ejs',{coupons})
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 
@@ -25,11 +26,13 @@ const addCoupon=(req,res)=>{
         res.redirect("/admin/coupon")
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 
 
 const block = async (req, res) => {
+  try{
     const id = req.query.id
     const couponData = await coupon.findById({ _id: id })
     if (couponData.status === true) {
@@ -38,6 +41,10 @@ const block = async (req, res) => {
     } else {
       await coupon.updateOne({ _id: id }, { $set: { status: true } })
       res.redirect('/admin/coupon')
+    }
+  }catch(error){
+      console.log(error);
+      res.redirect('/500')
     }
   }
 

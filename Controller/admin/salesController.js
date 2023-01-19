@@ -14,6 +14,7 @@ const salesPage=async (req,res)=>{
      res.render('../views/admin/salesReport.ejs',{orderDetails})
     }catch(error){
         console.log(error)
+        res.redirect('/500')
     }
 }
 
@@ -80,6 +81,7 @@ const postPDFData=async (req,res)=>{
     //   console.log(orderData);
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 
@@ -131,6 +133,7 @@ const csvDownload=async(req,res)=>{
         });
     }catch(error){
         console.log(error);
+        res.redirect('/500')
     }
 }
 

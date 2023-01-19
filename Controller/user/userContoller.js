@@ -8,6 +8,7 @@ const orders = require("../../Model/orderModel");
 const banner = require("../../Model/bannerModel");
 const mongoose = require("mongoose");
 const { findOne } = require("../../Model/customerModel");
+const wishlist = require("../../Model/wishlistModel");
 require('dotenv').config()
 
 // Login page
@@ -155,8 +156,9 @@ const home = async (req, res) => {
     const categories = await category.find({ status: true });
     const user=await customer.findOne({_id: req.session.user})
     const bannerData=await banner.find({ status: true})
-    const cartCount=await cart.find({userId: req.session.user})
-    res.render("../views/user/home.ejs", { brands, categories ,user,bannerData,cartCount});
+    const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    res.render("../views/user/home.ejs", { brands, categories ,user,bannerData,cartCount,wishCount});
   } catch (error) {
     console.log(error);
   }
@@ -168,6 +170,8 @@ const profile = async (req, res) => {
       const brands = await product.distinct("brand");
       const categories = await category.find({ status: true });
       const user=await customer.findOne({_id: req.session.user})
+      const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
       const address = await customer.aggregate([
       { $match: { _id : mongoose.Types.ObjectId(req.session.user)} },
       { $unwind: "$address" },
@@ -191,7 +195,7 @@ const profile = async (req, res) => {
     ]);
     const wrong=req.query.wrong
     const success=req.query.success
-    res.render("../views/user/userProfile.ejs", { brands, categories, address  ,user,userDetails,wrong,success});
+    res.render("../views/user/userProfile.ejs", { brands, categories, address  ,user,userDetails,wrong,success,wishCount,cartCount});
 }catch(error){
     console.log(error);
 }
@@ -210,11 +214,15 @@ let id
       const brands = await product.distinct("brand");
       const categories = await category.find({ status: true });
       const user=await customer.findOne({_id: req.session.user})
+      const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
       res.render("../views/user/addressEdit.ejs", {
         brands,
         categories,
         EditData,
-        user
+        user,
+        cartCount,
+        wishCount
       });
     } catch (error) {
       console.log(error);
@@ -320,8 +328,9 @@ const orderPage=async (req,res)=>{
     const categories = await category.find({ status: true });
     const user=await customer.findOne({_id: req.session.user})
   const order=await orders.find({userId:req.session.user})
-  // console.log(order);
-   res.render('../views/user/orderPage.ejs',{order,brands,categories,user})
+  const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+   res.render('../views/user/orderPage.ejs',{order,brands,categories,user,cartCount,wishCount})
   }catch(error){
     console.log(error);
   }
@@ -334,6 +343,8 @@ const viewOrderDetails=async (req,res)=>{
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
     const user =await customer.findOne({_id: req.session.user})
+    const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
   const productData =await orders.aggregate([
     {$match:{ _id:id }},
     {$unwind:"$orderItems"},
@@ -365,7 +376,7 @@ const viewOrderDetails=async (req,res)=>{
     }}
 
   ])
-   res.render('../views/user/orderHistory.ejs',{productData,brands,categories,user})
+   res.render('../views/user/orderHistory.ejs',{productData,brands,categories,user,cartCount,wishCount})
   }catch(error){
     console.log(error);
   }

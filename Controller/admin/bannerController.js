@@ -1,4 +1,5 @@
 const banner=require('../../Model/bannerModel')
+const sharp=require('sharp')
 
 const bannerManage=async (req,res)=>{
     try{
@@ -11,9 +12,18 @@ const bannerManage=async (req,res)=>{
 
 const addBanner=(req,res)=>{
     try{
+      let images = [];
+    for (let i = 0; i < req.files.length; i++) {
+      let name = Date.now() + "-" + i + ".webp";
+      sharp(req.files[i].buffer)
+        .toFormat("webp")
+        .webp({ quality: 100 })
+        .toFile("Public/user/images/banners/" + name);
+      images.push(name);
+    }
     let newBanner = new banner({
         name: req.body.name,
-        image: req.files,
+        image: images,
       });
       newBanner.save()
       res.redirect('/admin/banner')
@@ -25,7 +35,6 @@ const addBanner=(req,res)=>{
 const bannerBlock=async (req,res)=>{
     try{
         const id = req.query.id;
-        console.log(id);
         const bannerData = await banner.findById({ _id: id });
         if (bannerData.status == true) {
           await banner.updateOne({ _id: id }, { $set: { status: false } });

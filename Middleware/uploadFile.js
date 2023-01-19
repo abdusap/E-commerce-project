@@ -10,6 +10,14 @@ const path = require('path')
 //         cb(null,name);
 //     }
 // })
-const upload=multer({storage:multer.memoryStorage()})
+const multerFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith("image")) {
+      cb(null, true);
+    } else {
+      cb(console.log("Multer Filter: Must upload an Image"), false);
+    }
+  };
+  const upload = multer({ storage:multer.memoryStorage(), fileFilter: multerFilter });
+// const upload=multer({storage:multer.memoryStorage()})
 
 module.exports=upload;

@@ -77,7 +77,13 @@
                                 <a href="#">Links</a>
                                 <ul>
                                     <li><a href="tel:#"><i class="icon-phone"></i>Call: +773 660 0289</a></li>
-                                    <li><a href="/wishlist"><i class="icon-heart-o"></i>Wishlist <span id="wishlist_count">(3)</span></a></li>
+                                    <li><a href="/wishlist"><i class="icon-heart-o"></i>Wishlist 
+                                       <% if(wishCount!=null){ %>
+                                        <span id="wishlist_count">(<%=(wishCount.wishList.length)%>)</span>
+                                      <%  }else{ %>
+                                            <span id="wishlist_count">(0)</span> 
+                                       <% } %>
+                                    </a></li>
                                     <li><a href="about.html">About Us</a></li>
                                     <li><a href="contact.html">Contact Us</a></li>
                                     <!-- <li><a href="contact.html"><i class="icon-user"></i>Login</a></li> -->
@@ -101,7 +107,7 @@
                             <i class="icon-bars"></i>
                         </button>
 
-                        <a href="index.html" class="logo">
+                        <a href="/" class="logo">
                             <img src="/Public/user/images/logo.jpg" alt="Molla Logo" width="105" height="25">
                         </a>
 
@@ -169,7 +175,11 @@
                            <div class="dropdown cart-dropdown">
                             <a href="/cart" class="dropdown-toggle" role="button" >
                                 <i class="icon-shopping-cart"></i>
-                                <span class="cart-count" id="cart_count">0</span>
+                               <% if(cartCount!= null){ %>  
+                                <span class="cart-count" id="cart_count"><%=(cartCount.cartItem.length)%></span>
+                              <%  }else{ %>
+                                    <span class="cart-count" id="cart_count">0</span>
+                              <%  } %>
                             </a>
 
                     </div><!-- End .header-right -->

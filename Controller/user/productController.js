@@ -1,7 +1,8 @@
 const category = require("../../Model/categoryModel");
 const product = require("../../Model/productModel");
 const customer = require("../../Model/customerModel");
-
+const wishlist = require("../../Model/wishlistModel");
+const cart = require("../../Model/cartModal");
 const mongoose = require("mongoose");
 
 const productPage = async (req, res) => {
@@ -9,12 +10,14 @@ const productPage = async (req, res) => {
       const user=await customer.findOne({_id: req.session.user})
       const brands = await product.distinct("brand");
       const categories = await category.find({ status: true });
+      const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
     if(req.query.catId && req.query.brand){
       const productList = await product.find({category : req.query.catId , brand : req.query.brand , status : true});
-      res.render("../views/user/product.ejs", { productList, brands, categories ,user});
+      res.render("../views/user/product.ejs", { productList, brands, categories ,user,cartCount,wishCount});
     }else{
       const productList = await product.find({category : req.query.catId , status : true});
-    res.render("../views/user/product.ejs", { productList, brands, categories ,user});
+    res.render("../views/user/product.ejs", { productList, brands, categories ,user,cartCount,wishCount});
     }
     }catch(error){
         console.log(error);
@@ -29,11 +32,15 @@ const productPage = async (req, res) => {
     );
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
+    const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
     res.render("../views/user/productDetails.ejs", {
       brands,
       categories,
       productData,
-      user
+      user,
+      cartCount,
+      wishCount
     });
 }catch(error){
     console.log(error);
@@ -45,8 +52,9 @@ const productPage = async (req, res) => {
       const user = await customer.findOne({ _id: req.session.user })
       const categories = await category.find({ status: true })
       const brands = await product.distinct('brand')
+      const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
       const key = req.body.search
-      // console.log(key)
       const productList = await product.find({
         $or: [
           { name: new RegExp(key, 'i') }
@@ -54,9 +62,9 @@ const productPage = async (req, res) => {
         ]
       })
       if (productList.length) {
-        res.render('user/product', { user, categories, brands, productList })
+        res.render('user/product', { user, categories, brands, productList,cartCount,wishCount })
       } else {
-        res.render('user/product', { user, categories, brands, productList, message: 'Ooops ...! No Match' })
+        res.render('user/product', { user, categories, brands, productList,cartCount,wishCount, message: 'Ooops ...! No Match' })
       }
     } catch (error) {
       console.log(error)

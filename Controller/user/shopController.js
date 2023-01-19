@@ -16,6 +16,8 @@ const userCart = async (req, res) => {
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
     const cartExist=await cart.findOne({userId:req.session.user})
+    const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
     const cartItems = await cart.aggregate([
       { $match: { userId: mongoose.Types.ObjectId(req.session.user) } },
       { $unwind: "$cartItem" },
@@ -60,7 +62,9 @@ const userCart = async (req, res) => {
       cartItems,
       user,
       subtotal,
-      cartExist
+      cartExist,
+      cartCount,
+      wishCount
     });
   } catch (error) {
     console.log(error);
@@ -224,6 +228,8 @@ const checkOut = async (req, res) => {
     const user = await customer.findOne({ _id: req.session.user });
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
+    const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
     const address = await customer.aggregate([
       { $match: { _id: mongoose.Types.ObjectId(req.session.user) } },
       { $unwind: "$address" },
@@ -248,6 +254,8 @@ const checkOut = async (req, res) => {
       address,
       cartItems,
       subtotal,
+      cartCount,
+      wishCount
     });
   }else{
       res.redirect('/')
@@ -470,7 +478,7 @@ const postCheckOut = async (req, res) => {
           paymentMethod: "Online Payment",
         });  
          let totalAmount=req.body.total
-         totalAmount=parseFloat(totalAmount)
+         totalAmount=parseInt(totalAmount)
         var options = {
           amount: totalAmount*100,  // amount in the smallest currency unit
           currency: "INR",
@@ -539,8 +547,10 @@ try{
     const user = await customer.findOne({ _id: req.session.user });
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
+    const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
     req.session.success=false
-    res.render('../views/user/paymentSuccess.ejs',{user,brands,categories})
+    res.render('../views/user/paymentSuccess.ejs',{user,brands,categories,cartCount,wishCount})
   }else{
     res.redirect('/')
   }
@@ -554,7 +564,9 @@ const paymentFail=async (req,res)=>{
       const user = await customer.findOne({ _id: req.session.user });
       const brands = await product.distinct("brand");
       const categories = await category.find({ status: true });
-      res.render('../views/user/paymentFail.ejs',{user,brands,categories})
+      const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+      res.render('../views/user/paymentFail.ejs',{user,brands,categories,cartCount,wishCount})
   }catch(error){
     console.log(error);
   }
@@ -567,6 +579,8 @@ const viewWishlist=async (req,res)=>{
     const brands = await product.distinct("brand");
     const categories = await category.find({ status: true });
     const wishlistExist=await wishlist.findOne({userId:req.session.user})
+    const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
+    const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
     const wishList = await wishlist.aggregate([
       { $match: { userId: user._id } },
       { $unwind: "$wishList" },
@@ -600,7 +614,7 @@ const viewWishlist=async (req,res)=>{
         },
       },
     ]);
-    res.render('../views/user/wishlist.ejs',{user,brands,categories,wishList,wishlistExist})
+    res.render('../views/user/wishlist.ejs',{user,brands,categories,wishList,wishlistExist,cartCount,wishCount})
   }catch(error){
     console.log(error);
   }

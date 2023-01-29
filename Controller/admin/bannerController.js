@@ -24,6 +24,12 @@ const addBanner=(req,res)=>{
     }
     let newBanner = new banner({
         name: req.body.name,
+        subHeading: req.body.subHeading,
+        mainHeading1: req.body.mainHeading1,
+        mainHeading2: req.body.mainHeading2,
+        subHighlight: req.body.subHighlight,
+        mainHighlight:req.body.mainHighlight,
+        url:req.body.url,
         image: images,
       });
       newBanner.save()

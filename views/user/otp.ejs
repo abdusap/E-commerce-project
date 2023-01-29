@@ -1,42 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
+<!-- molla/index-2.html  22 Nov 2019 09:55:32 GMT -->
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>OTP</title>
-   
-    <link rel="stylesheet" href="/public/user/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TechKart</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/Public/user/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Public/user/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Public/user/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/Public/user/images/icons/site.html">
+    <link rel="mask-icon" href="/Public/user/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/Public/user/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/Public/user/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff"> 
+    <!-- razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- razorpay -->
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/Public/user/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Public/user/css/plugins/owl-carousel/owl.carousel.css">
+    <!-- <link rel="stylesheet" href="/Public/user/css/plugins/magnific-popup/magnific-popup.css"> -->
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/Public/user/css/style.css">
+    <link rel="stylesheet" href="/Public/user/css/skin-demo-3.css">
+    <link rel="stylesheet" href="/Public/user/css//demo-3.css">
+    <!-- <link rel="stylesheet" href="assets/css/plugins/nouislider/nouislider.css"> -->
+    <!-- ajax link  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-    <!-- Main css -->
-    <link rel="stylesheet" href="/Public/admin/css/adminLoginStyle.css">
 </head>
+
 <body>
 
-        <div class="container">
-            <div class="signin-content">
-                <div class="signin-image">
-                    <figure><img src="/Public/user/images/otp.jpg" alt="sign up image"></figure>
-                </div>
+    <div class="container1 image-fluid" style="background-color: #777;height: 657px; padding-top: 130px;">
+   
 
-                <div class="signin-form">
-                    <h2 class="form-title">OTP</h2>
-                    <p style="color: red;"><%=locals.wrong%></p>
-                    <form action="/otpVerification" method="POST" class="register-form" id="login-form">
-                        <p class="text-danger"><%=locals.errorMessage%></p>
-                        <div class="form-group">
-                            <label for="your_name"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="text" name="otp" id="your_name" placeholder="Enter OTP"/>
-                        </div>
-                        
-                        <div class="form-group form-button">
-                            <input type="submit" name="signin" id="signin" class="form-submit" value="Submit"/>
-                        </div>
-                    </form>
-                    
-                </div>
-            </div>
-        </div>
+        <div class="form-box" >
+            <div class="form-tab">
+                <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">OTP</a>
+                    </li>
+                   
+                </ul>
+                <div class="tab-content" id="tab-content-5">
+                    <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                        <form action="/otpVerification" method="post">
+                            <div class="form-group">
+                                <p style="color: red;"><%=locals.wrong%></p>
+                                <label for="singin-email">Enter the OTP *</label>
+                                <input type="number" class="form-control" id="singin-email" name="otp" placeholder="Enter OTP here" required>
+                            </div><!-- End .form-group -->
 
-</body>
-</html>
+                            
+
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-outline-primary-2">
+                                    <span>VERIFY</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+
+                               
+
+                               
+                            </div><!-- End .form-footer -->
+                        </form>
+                       
+                    </div><!-- .End .tab-pane -->
+                
+                </div><!-- End .tab-content -->
+            </div><!-- End .form-tab -->
+        </div><!-- End .form-box -->
+    <!-- </div> -->
+
+
+</div>
+
+        <script src="/Public/user/js/script.js"></script>
+
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Plugins JS File -->
+        <script src="/Public/user/js/bootstrap.bundle.min.js"></script>
+        <script src="/Public/user/js/jquery.waypoints.min.js"></script>
+        <script src="/Public/user/js/owl.carousel.min.js"></script>
+        <script src="/Public/user/js/jquery.elevateZoom.min.js"></script>
+        
+        <!-- Main JS File -->
+        <script src="/Public/user/js/main.js"></script>
+        </body>
+        
+        
+        </html>

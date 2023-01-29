@@ -358,3 +358,79 @@ function verifyPayment(payment, order,orderDetails) {
         },
     });
 }
+
+
+$(document).ready(function() {
+    $('#loginForm').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/login',
+            data: formData,
+            success:  (res) => {
+                if(res.success){
+                    location.href='/'
+            }
+                if(res.wrong){
+                    $('#loginError').html(res.wrong)
+                }
+                
+            }
+        });
+    });
+});
+
+
+$(document).ready(function() {
+    $('#signUpForm').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/signup',
+            data: formData,
+            success:  (res) => {
+                if(res.success){
+                    $('#signin-modal').modal('hide');
+                $('#otp_modal').modal('show');
+            }
+                if(res.wrong){
+                    $('#signupError').html(res.wrong)
+                }
+                
+            }
+        });
+    });
+});
+
+
+$(document).ready(function() {
+    $('#otpForm').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/otpVerification',
+            data: formData,
+            success:  (res) => {
+                if(res.success){
+                    $('#otp_modal').modal('hide');
+                    $('#signin-modal').modal('show');
+                    $('#loginSuccess').html(res.success)
+            }
+                if(res.wrong){
+                    $('#otpwrong').html(res.wrong)
+                }
+                
+            }
+        });
+    });
+});
+
+window.onload = function() {
+    if (window.location.search.indexOf("showModal=true") > -1) {
+        $('#signin-modal').modal('show');
+        
+    }
+}

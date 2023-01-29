@@ -1320,16 +1320,7 @@ blockquote.text-white cite span {
   letter-spacing: -0.01em;
   margin-right: 1.5rem;
 }
-.header-intro-clearance .header-bottom .container::before {
-  position: absolute;
-  content: "";
-  left: 28.5rem;
-  height: 1.5rem;
-  width: 0.1rem;
-  top: 50%;
-  background-color: #ccc;
-  transform: translateY(-50%);
-}
+
 .header-intro-clearance .header-bottom .container::after {
   position: absolute;
   content: "";
@@ -2303,7 +2294,7 @@ blockquote.text-white cite span {
     z-index: 1040;
     animation-name: fixedHeader;
     animation-duration: 0.4s;
-    background-color: #fff;
+    background-color: #333;
     box-shadow: 0 3px 6px rgba(51, 51, 51, 0.05);
   }
   .sticky-header.fixed .logo {

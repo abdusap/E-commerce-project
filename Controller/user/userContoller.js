@@ -48,15 +48,17 @@ const userVerfication = async (req, res) => {
         );
         if (hashedCheck == true) {
           req.session.user=userFind._id
-          res.redirect("/");
+
+          res.json({success:true});
         } else {
-          res.redirect("/login?wrong=Wrong Email or Password");
+          res.json({wrong:'Wrong Email or Password'})
+          
         }
       } else {
-        res.redirect("/login?wrong=Your Account is Blocked");
+        res.json({wrong:'Your Account is Blocked'})   
       }
     } else {
-      res.redirect("/login?wrong=Invalid User");
+      res.json({wrong:'Invalid User'})    
     }
   } catch (error) {
     console.log(error);
@@ -81,9 +83,10 @@ const userVerfication = async (req, res) => {
       const emailCheck = await customer.findOne({ email: inputEmail });
       const numberCheck = await customer.findOne({ mobile: inputNumber });
       if (emailCheck || numberCheck) {
-        res.render("../views/user/sign_up.ejs", {
-          wrong: "User already Exists",
-        });
+        res.json({wrong:'User already Exists'})
+        // res.render("../views/user/sign_up.ejs", {
+        //   wrong: "User already Exists",
+        // });
       } else {
         const tempOTP = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
         req.session.tempOTP = tempOTP;
@@ -108,7 +111,8 @@ const userVerfication = async (req, res) => {
         // Send mail
         await transporter.sendMail(mailOptions)
         console.log("Account creation OTP Sent: " + req.session.tempOTP)
-        res.redirect("/otp")
+        res.json({success:true})
+        // res.redirect("/otp")
       }
     } catch (error) {
       console.log("Signup error: " + error);
@@ -119,18 +123,18 @@ const userVerfication = async (req, res) => {
  // OTP verification
 var otpVerification = async (req, res) => {
   try{
-if (req.session.tempOTP) {
+
   if (req.session.tempOTP == req.body.otp) {
     console.log("Account creation OTP deleted: " + req.session.tempOTP);
     newUserDetails.save();
     req.session.tempOTP = false;
-    res.redirect("/login");
+    res.json({success:'Account successfully created! Please login.'})
+    // res.redirect("/login");
   } else {
-    res.render("../views/user/otp.ejs", { wrong: "OTP incorrect" });
+    res.json({wrong:'OTP incorrect'})
+    // res.render("../views/user/otp.ejs", { wrong: "OTP incorrect" });
   }
-} else {
-  res.redirect("/login");
-}
+
 }catch(error){
   console.log(error);
   res.redirect('/500')
@@ -164,7 +168,8 @@ const home = async (req, res) => {
     const bannerData=await banner.find({ status: true})
     const cartCount=await cart.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
     const wishCount=await wishlist.findOne({userId: mongoose.Types.ObjectId(req.session.user)})
-    res.render("../views/user/home.ejs", { brands, categories ,user,bannerData,cartCount,wishCount});
+    const productData=await product.find().limit(10);
+    res.render("../views/user/home.ejs", { brands, categories ,user,bannerData,cartCount,wishCount,productData});
   } catch (error) {
     console.log(error);
     res.redirect('/500')
@@ -433,7 +438,7 @@ const logout= async (req, res) => {
   try{
      req.session.destroy()
      console.log('session destroyed')
-     res.redirect('/login')
+     res.redirect('/')
   }catch(error){
     console.log(error);
     res.redirect('/500')

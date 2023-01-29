@@ -32,6 +32,8 @@
     <!-- <link rel="stylesheet" href="/Public/user/css/plugins/magnific-popup/magnific-popup.css"> -->
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/Public/user/css/style.css">
+    <link rel="stylesheet" href="/Public/user/css/skin-demo-3.css">
+    <link rel="stylesheet" href="/Public/user/css//demo-3.css">
     <!-- <link rel="stylesheet" href="assets/css/plugins/nouislider/nouislider.css"> -->
     <!-- ajax link  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -40,81 +42,188 @@
 
 <body>
     <div class="page-wrapper">
-        <header class="header">
+       
+
+
+
+
+
+
+
+        <header class="header header-intro-clearance header-3">
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        <div class="header-dropdown">
-                            <a href="#">Usd</a>
-                            <div class="header-menu">
-                                <ul>
-                                    <li><a href="#">Eur</a></li>
-                                    <li><a href="#">Usd</a></li> 
-                                 </ul> 
-                             </div>
-                             <!-- End .header-menu  -->
-                         </div>
-                         <!-- End .header-dropdown -->
+                        <a href="tel:#"><i class="icon-phone"></i>Call: +91 7736600289</a>
+                    </div><!-- End .header-left -->
 
-                        <div class="header-dropdown">
-                             <a href="#">Eng</a>
-                            <div class="header-menu">
-                                <ul>
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">Spanish</a></li> 
-                                </ul> 
-                            </div>
-                            <!-- End .header-menu -->
-                         </div>
-                            <!-- End .header-dropdown  -->
-                     </div>
-                     <!-- End .header-left -->
+                    <div class="header-right">
 
-                     <div class="header-right">
                         <ul class="top-menu">
                             <li>
                                 <a href="#">Links</a>
                                 <ul>
-                                    <li><a href="tel:#"><i class="icon-phone"></i>Call: +773 660 0289</a></li>
-                                    <li><a href="/wishlist"><i class="icon-heart-o"></i>Wishlist 
-                                       <% if(wishCount!=null){ %>
-                                        <span id="wishlist_count">(<%=(wishCount.wishList.length)%>)</span>
-                                      <%  }else{ %>
-                                            <span id="wishlist_count">(0)</span> 
-                                       <% } %>
-                                    </a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                    <!-- <li><a href="contact.html"><i class="icon-user"></i>Login</a></li> -->
-                                    <!-- <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li> -->
+                                    <li>
+                                        <div class="header-dropdown">
+                                            <a href="#">USD</a>
+                                            <div class="header-menu">
+                                                <ul>
+                                                    <li><a href="#">Eur</a></li>
+                                                    <li><a href="#">Usd</a></li>
+                                                </ul>
+                                            </div><!-- End .header-menu -->
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="header-dropdown">
+                                            <a href="#">English</a>
+                                            <div class="header-menu">
+                                                <ul>
+                                                    <li><a href="#">English</a></li>
+                                                    <li><a href="#">French</a></li>
+                                                    <li><a href="#">Spanish</a></li>
+                                                </ul>
+                                            </div><!-- End .header-menu -->
+                                        </div>
+                                    </li>
+                                  <%  if(user==null){ %>
+                                    <li><a href="#signin-modal" data-toggle="modal" id="hh">Sign in / Sign up</a></li>
+                                    <% } %>
                                 </ul>
                             </li>
-                         </ul>
-                         <!-- End .top-menu  -->
-                     </div>
-                        <!-- End .header-right  -->
-                 </div>
-                 <!-- End .container -->
-             </div>
-                <!-- End .header-top  -->
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
 
-            <div class="header-middle sticky-header">
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
+
+            <div class="header-middle sticky-header ">
                 <div class="container">
                     <div class="header-left">
                         <button class="mobile-menu-toggler">
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
-
+                        
                         <a href="/" class="logo">
-                            <img src="/Public/user/images/logo.jpg" alt="Molla Logo" width="105" height="25">
+                            <img src="/Public/user/images/logo.png" alt="Molla Logo" width="125" height="25">
                         </a>
+                    </div><!-- End .header-left -->
 
+                    <div class="header-center">
+                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            <form action="/product" method="post">
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+                        </div><!-- End .header-search -->
+                    </div>
+
+                    <div class="header-right">
+                        <!-- <div class="dropdown compare-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
+                                <div class="icon">
+                                    <i class="icon-random"></i>
+                                </div>
+                                <p>Compare</p>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <ul class="compare-products">
+                                    <li class="compare-product">
+                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
+                                        <h4 class="compare-product-title"><a href="product.html">Blue Night Dress</a></h4>
+                                    </li>
+                                    <li class="compare-product">
+                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
+                                        <h4 class="compare-product-title"><a href="product.html">White Long Skirt</a></h4>
+                                    </li>
+                                </ul>
+
+                                <div class="compare-actions">
+                                    <a href="#" class="action-link">Clear All</a>
+                                    <a href="#" class="btn btn-outline-primary-2"><span>Compare</span><i class="icon-long-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="drop cart-dropdown">
+                            <a href="/wishlist" class="dropdown-toggle" >
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+                                    <% if(wishCount!= null){ %> 
+                                    <span class="cart-count text-white"><%=wishCount.wishList.length%></span>
+                                    <% } %>
+                                </div>
+                                <p>Cart</p>
+                            </a>
+
+                          
+                        </div><!-- End .cart-dropdown -->
+
+                        <div class="dropdown cart-dropdown">
+                            <a href="/cart" class="dropdown-toggle" >
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    <% if(cartCount!= null){ %> 
+                                    <span class="cart-count text-white"><%=cartCount.cartItem.length%></span>
+                                    <% } %>
+                                </div>
+                                <p>Cart</p>
+                            </a>
+
+                          
+                        </div><!-- End .cart-dropdown -->
+                        <% if (user!=null){ %>
+                        <div class="dropdown cart-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <div class="icon">
+                                    <i class="icon-user"></i>
+                                </div>
+                                <p><%=user.name%></p>
+                            </a>
+    
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-cart-products">
+                                   
+    
+                                    <div class="product">
+                                        
+    
+                                <div class="dropdown-cart-action">
+                                    <a href="/profile" class="btn btn-primary">Profile</a>
+                                    <a href="/logout" class="btn btn-outline-primary-2"><span>Logout</span><i class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .dropdown-cart-total -->
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .cart-dropdown -->
+                        
+                    <!-- End .container -->
+                </div><!-- End .header-middle -->
+            </div>
+            <% } %>
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+            <div class="header-bottom ">
+                <div class="container">
+                    
+
+                    <div class="header-center">
                         <nav class="main-nav">
-                            <ul class="menu sf-arrow">
+                            <ul class="menu sf-arrows">
+                       
+                         
+                                <li>
+                                    <a href="/" class="sf">HOME</a>
+
+                               
+                                </li>
                                 <% categories.forEach((data)=>{ %>
-                
                                 <li>
                                     <a href="/product?catId=<%=data._id%>" class="sf-with-ul"><%=data.name%></a>
 
@@ -122,10 +231,11 @@
                                         <div class="row no-gutters">
                                             <div class="col-md-6">
                                                 <div class="menu-col">
-                                                    <div class="menu-title"><%=data.name%> brands</div><!-- End .menu-title -->
+                                                    <div class="menu-title"><%=data.name%> Brands</div><!-- End .menu-title -->
                                                     <ul>
                                                         <% brands.forEach((brand)=>{%>
                                                         <li><a href="/product?catId=<%=data._id%>&brand=<%=brand%>"><%=brand%></a></li>
+                                                        
                                                         <% }) %>
                                                     </ul>
                                                 </div><!-- End .menu-col -->
@@ -137,81 +247,26 @@
                                                         <img src="/Public/user/images/categories/<%=data.image%>" alt="Banner">
 
                                                         <div class="banner-content banner-content-bottom">
-                                                            <div class="banner-title text-white">New Trends<br><span><strong>spring 2022</strong></span></div>End
-                                                        </div>
-                                                        <!-- End .banner-content -->
+                                                            <div class="banner-title text-white">New Trends<br><span><strong>spring 2019</strong></span></div><!-- End .banner-title -->
+                                                        </div><!-- End .banner-content -->
                                                     </a>
-                                                </div>
-                                                <!-- End .banner -->
+                                                </div><!-- End .banner -->
                                             </div><!-- End .col-md-6 -->
                                         </div><!-- End .row -->
                                     </div><!-- End .megamenu megamenu-sm -->
                                 </li>
                                 <% }) %>
-
-                                
-
-                                
-                               
-                       
+                            
                           
+                                
+                           
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
-                    </div><!-- End .header-left -->
+                    </div><!-- End .header-center -->
 
                     <div class="header-right">
-                        <div class="header-search">
-                            <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
-                            <form action="/product" method="post">
-                                <div class="header-search-wrapper">
-                                    <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="search" id="q" placeholder="Search in..." required>
-                                </div><!-- End .header-search-wrapper -->
-                            </form>
-                        </div><!-- End .header-search -->
-                         
-                        
-                        
-                           <div class="dropdown cart-dropdown">
-                            <a href="/cart" class="dropdown-toggle" role="button" >
-                                <i class="icon-shopping-cart"></i>
-                               <% if(cartCount!= null){ %>  
-                                <span class="cart-count" id="cart_count"><%=(cartCount.cartItem.length)%></span>
-                              <%  }else{ %>
-                                    <span class="cart-count" id="cart_count">0</span>
-                              <%  } %>
-                            </a>
-
-                    </div><!-- End .header-right -->
-                    <% if(user){ %>
-                    <div class="dropdown cart-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                            <i class="icon-user"></i><h6><%=user.name%></h6>
-                            <!-- <span class="cart-count">2</span> -->
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-cart-products">
-                               
-
-                                <div class="product">
-                                    
-                            <div class="dropdown-cart-action">
-                                <a href="/profile" class="btn btn-primary">Profile</a>
-                                <a href="/logout" class="btn btn-outline-primary-2"><span>Logout</span><i class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .dropdown-cart-total -->
-                        </div><!-- End .dropdown-menu -->
-                    </div><!-- End .cart-dropdown -->
-                    
-                <!-- End .container -->
-            </div><!-- End .header-middle -->
-        </div>
-        <% }else{ %>
-        <div class="dropdown cart-dropdown">
-            <a href="/login" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false" data-display="static" >
-                <i class="icon-user"></i><h6>Login</h6>
-                <!-- <span class="cart-count">2</span> -->
-            </a>
-    </div>
-    <% } %>
+                        <i class="la la-lightbulb-o"></i><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+                    </div>
+                </div><!-- End .container -->
+            </div><!-- End .header-bottom -->
         </header><!-- End .header -->
